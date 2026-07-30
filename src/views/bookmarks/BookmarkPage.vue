@@ -101,13 +101,13 @@ async function handleSubmit() {
     return
   }
 
-  const data = {
+  const data = JSON.parse(JSON.stringify({
     title: form.value.title.trim(),
     url: form.value.url.trim(),
     category: form.value.category.trim() || undefined,
     favicon: getFavicon(form.value.url),
     tags: form.value.tags,
-  }
+  }))
 
   try {
     if (isEditing.value && editingId.value) {
