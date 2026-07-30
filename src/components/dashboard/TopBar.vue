@@ -48,7 +48,7 @@ const dateStr = computed(() => now.value.format('YYYY-MM-DD dddd'))
     <div class="topbar-center">
       <div class="search-trigger" @click="searchStore.open()">
         <el-icon :size="16"><Search /></el-icon>
-        <span>Search...</span>
+        <span>搜索...</span>
         <kbd>Ctrl+K</kbd>
       </div>
     </div>

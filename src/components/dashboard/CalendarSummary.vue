@@ -18,18 +18,18 @@ function formatTime(dateStr: string) { return dayjs(dateStr).format('HH:mm') }
 </script>
 
 <template>
-  <AppCard title="Schedule" :subtitle="todayEvents.length + ' events today'">
+  <AppCard title="日程" :subtitle="todayEvents.length + ' 项今日日程'">
     <template #actions>
-      <el-button text size="small" @click="router.push('/calendar')">View All</el-button>
+      <el-button text size="small" @click="router.push('/calendar')">查看全部</el-button>
     </template>
     <div v-if="todayEvents.length" class="event-list">
       <div v-for="event in todayEvents" :key="event.id" class="event-item">
         <span class="event-dot" :style="{ background: event.color }" />
-        <span class="event-time">{{ event.isAllDay ? 'All Day' : formatTime(event.startTime) }}</span>
+        <span class="event-time">{{ event.isAllDay ? '全天' : formatTime(event.startTime) }}</span>
         <span class="event-title">{{ event.title }}</span>
       </div>
     </div>
-    <div v-else class="empty-hint">No events today</div>
+    <div v-else class="empty-hint">今日无日程</div>
   </AppCard>
 </template>
 

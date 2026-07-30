@@ -13,9 +13,9 @@ function getDomain(url: string) { try { return new URL(url).hostname } catch { r
 </script>
 
 <template>
-  <AppCard title="Bookmarks" :subtitle="bookmarkStore.bookmarks.length + ' total'">
+  <AppCard title="书签" :subtitle="bookmarkStore.bookmarks.length + ' 个书签'">
     <template #actions>
-      <el-button text size="small" @click="router.push('/bookmarks')">View All</el-button>
+      <el-button text size="small" @click="router.push('/bookmarks')">查看全部</el-button>
     </template>
     <div v-if="recentBookmarks.length" class="bookmark-list">
       <div v-for="bm in recentBookmarks" :key="bm.id" class="bookmark-item">
@@ -23,7 +23,7 @@ function getDomain(url: string) { try { return new URL(url).hostname } catch { r
         <span class="bookmark-domain">{{ getDomain(bm.url) }}</span>
       </div>
     </div>
-    <div v-else class="empty-hint">No bookmarks yet</div>
+    <div v-else class="empty-hint">暂无书签</div>
   </AppCard>
 </template>
 

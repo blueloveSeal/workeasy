@@ -27,19 +27,19 @@ const priorityColor = (p: string) => {
 </script>
 
 <template>
-  <AppCard title="Tasks" :subtitle="todayTasks.length + ' due today'">
+  <AppCard title="任务" :subtitle="todayTasks.length + ' 项今日到期'">
     <template #actions>
-      <el-button text size="small" @click="router.push('/tasks')">View All</el-button>
+      <el-button text size="small" @click="router.push('/tasks')">查看全部</el-button>
     </template>
 
     <div class="task-stats">
       <div class="stat">
         <span class="stat-value">{{ todayTasks.length }}</span>
-        <span class="stat-label">Due Today</span>
+        <span class="stat-label">今日到期</span>
       </div>
       <div class="stat">
         <span class="stat-value overdue">{{ overdueCount }}</span>
-        <span class="stat-label">Overdue</span>
+        <span class="stat-label">已逾期</span>
       </div>
     </div>
 
@@ -49,7 +49,7 @@ const priorityColor = (p: string) => {
         <span class="task-title">{{ task.title }}</span>
       </div>
     </div>
-    <div v-else class="empty-hint">No tasks due today</div>
+    <div v-else class="empty-hint">今日无到期任务</div>
   </AppCard>
 </template>
 

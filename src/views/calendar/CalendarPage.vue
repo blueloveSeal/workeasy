@@ -6,6 +6,9 @@ import { Plus, Delete, ArrowLeft, ArrowRight } from '@element-plus/icons-vue'
 import dayjs from 'dayjs'
 import isoWeek from 'dayjs/plugin/isoWeek'
 import isBetween from 'dayjs/plugin/isBetween'
+import 'dayjs/locale/zh-cn'
+
+dayjs.locale('zh-cn')
 
 import TopBar from '@/components/dashboard/TopBar.vue'
 import SearchDialog from '@/components/common/SearchDialog.vue'
@@ -70,11 +73,11 @@ const PRESET_COLORS = [
 
 // --- Reminder options ---
 const REMINDER_OPTIONS = [
-  { label: 'None', value: null },
-  { label: '5 minutes before', value: 5 },
-  { label: '15 minutes before', value: 15 },
-  { label: '30 minutes before', value: 30 },
-  { label: '1 hour before', value: 60 },
+  { label: '无', value: null },
+  { label: '5分钟前', value: 5 },
+  { label: '15分钟前', value: 15 },
+  { label: '30分钟前', value: 30 },
+  { label: '1小时前', value: 60 },
 ]
 
 // --- Event dialog ---
@@ -106,9 +109,9 @@ const defaultForm = (): EventFormData => ({
 const eventForm = reactive<EventFormData>(defaultForm())
 
 const formRules: FormRules = {
-  title: [{ required: true, message: 'Please enter an event title', trigger: 'blur' }],
-  startTime: [{ required: true, message: 'Please select start time', trigger: 'change' }],
-  endTime: [{ required: true, message: 'Please select end time', trigger: 'change' }],
+  title: [{ required: true, message: '请输入日程标题', trigger: 'blur' }],
+  startTime: [{ required: true, message: '请选择开始时间', trigger: 'change' }],
+  endTime: [{ required: true, message: '请选择结束时间', trigger: 'change' }],
 }
 
 const openNewEventDialog = (date?: string) => {
@@ -143,7 +146,7 @@ const handleSaveEvent = async () => {
     if (!valid) return
 
     if (dayjs(eventForm.endTime).isBefore(dayjs(eventForm.startTime))) {
-      ElMessage.warning('End time must be after start time')
+      ElMessage.warning('结束时间必须晚于开始时间')
       return
     }
 
@@ -159,10 +162,10 @@ const handleSaveEvent = async () => {
 
     if (isEditing.value && editingEventId.value) {
       await calendarStore.update(editingEventId.value, payload)
-      ElMessage.success('Event updated')
+      ElMessage.success('日程已更新')
     } else {
       await calendarStore.add(payload)
-      ElMessage.success('Event created')
+      ElMessage.success('日程已创建')
     }
 
     dialogVisible.value = false
@@ -171,20 +174,20 @@ const handleSaveEvent = async () => {
 
 const handleDeleteEvent = async (id: string) => {
   try {
-    await ElMessageBox.confirm('Are you sure you want to delete this event?', 'Delete Event', {
+    await ElMessageBox.confirm('确定要删除此日程吗？', '删除日程', {
       type: 'warning',
-      confirmButtonText: 'Delete',
-      cancelButtonText: 'Cancel',
+      confirmButtonText: '删除',
+      cancelButtonText: '取消',
     })
     await calendarStore.remove(id)
-    ElMessage.success('Event deleted')
+    ElMessage.success('日程已删除')
   } catch {
     // cancelled
   }
 }
 
 // --- Month view grid ---
-const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+const WEEKDAYS = ['日', '一', '二', '三', '四', '五', '六']
 
 const monthGrid = computed(() => {
   const start = currentDate.value.startOf('month').startOf('week')
@@ -306,8 +309,8 @@ const checkUpcomingEvents = () => {
     const diff = reminderTime.diff(now, 'minute')
     if (diff >= 0 && diff <= 1) {
       notifiedEvents.value.add(event.id)
-      new Notification('Event Reminder', {
-        body: `${event.title} starts in ${event.reminder} minute(s)`,
+      new Notification('日程提醒', {
+        body: `${event.title} 将在${event.reminder}分钟后开始`,
         icon: '/favicon.ico',
       })
     }
@@ -333,16 +336,16 @@ onUnmounted(() => {
     <div class="calendar-content">
       <!-- Header -->
       <div class="calendar-header">
-        <h2 class="page-title">Calendar</h2>
+        <h2 class="page-title">日程</h2>
         <div class="header-actions">
           <el-radio-group v-model="viewMode" size="default">
-            <el-radio-button value="month">Month</el-radio-button>
-            <el-radio-button value="week">Week</el-radio-button>
-            <el-radio-button value="day">Day</el-radio-button>
+            <el-radio-button value="month">月</el-radio-button>
+            <el-radio-button value="week">周</el-radio-button>
+            <el-radio-button value="day">日</el-radio-button>
           </el-radio-group>
           <el-button type="primary" @click="openNewEventDialog()">
             <el-icon><Plus /></el-icon>
-            New Event
+            新建日程
           </el-button>
         </div>
       </div>
@@ -352,7 +355,7 @@ onUnmounted(() => {
         <div class="nav-left">
           <el-button :icon="ArrowLeft" circle size="small" @click="prevPeriod" />
           <el-button :icon="ArrowRight" circle size="small" @click="nextPeriod" />
-          <el-button size="small" @click="goToToday">Today</el-button>
+          <el-button size="small" @click="goToToday">今天</el-button>
         </div>
         <span class="nav-title">{{ headerTitle }}</span>
       </div>
@@ -397,7 +400,7 @@ onUnmounted(() => {
                     v-if="getEventsForDate(date).length > 3"
                     class="event-more"
                   >
-                    +{{ getEventsForDate(date).length - 3 }} more
+                    +{{ getEventsForDate(date).length - 3 }} 更多
                   </div>
                 </div>
               </div>
@@ -410,7 +413,7 @@ onUnmounted(() => {
               <h3>{{ dayjs(selectedDate).format('MMM D, YYYY') }}</h3>
               <el-button type="primary" size="small" @click="openNewEventDialog(selectedDate)">
                 <el-icon><Plus /></el-icon>
-                Add
+                添加
               </el-button>
             </div>
             <div class="side-panel-body">
@@ -422,19 +425,19 @@ onUnmounted(() => {
               >
                 <div class="side-event-title">{{ event.title }}</div>
                 <div class="side-event-time">
-                  <template v-if="event.isAllDay">All Day</template>
+                  <template v-if="event.isAllDay">全天</template>
                   <template v-else>
                     {{ dayjs(event.startTime).format('HH:mm') }} - {{ dayjs(event.endTime).format('HH:mm') }}
                   </template>
                 </div>
                 <div v-if="event.description" class="side-event-desc">{{ event.description }}</div>
                 <div class="side-event-actions">
-                  <el-button link type="primary" size="small" @click="openEditEventDialog(event)">Edit</el-button>
-                  <el-button link type="danger" size="small" @click="handleDeleteEvent(event.id)">Delete</el-button>
+                  <el-button link type="primary" size="small" @click="openEditEventDialog(event)">编辑</el-button>
+                  <el-button link type="danger" size="small" @click="handleDeleteEvent(event.id)">删除</el-button>
                 </div>
               </div>
               <div v-if="selectedDateEvents.length === 0" class="side-panel-empty">
-                No events for this day
+                当天暂无日程
               </div>
             </div>
           </div>
@@ -446,7 +449,7 @@ onUnmounted(() => {
         <div class="week-view">
           <!-- All-day row -->
           <div class="week-allday-row">
-            <div class="time-gutter-label">All Day</div>
+            <div class="time-gutter-label">全天</div>
             <div
               v-for="date in weekDays"
               :key="date.format('YYYY-MM-DD')"
@@ -521,7 +524,7 @@ onUnmounted(() => {
         <div class="day-view">
           <!-- All-day events -->
           <div v-if="dayViewAllDayEvents.length > 0" class="day-allday-row">
-            <span class="day-allday-label">All Day</span>
+            <span class="day-allday-label">全天</span>
             <div class="day-allday-events">
               <div
                 v-for="event in dayViewAllDayEvents"
@@ -583,7 +586,7 @@ onUnmounted(() => {
     <!-- ==================== EVENT DIALOG ==================== -->
     <el-dialog
       v-model="dialogVisible"
-      :title="isEditing ? 'Edit Event' : 'New Event'"
+      :title="isEditing ? '编辑日程' : '新建日程'"
       width="520px"
       :close-on-click-modal="false"
       destroy-on-close
@@ -595,30 +598,30 @@ onUnmounted(() => {
         label-position="top"
         class="event-form"
       >
-        <el-form-item label="Title" prop="title">
-          <el-input v-model="eventForm.title" placeholder="Enter event title" />
+        <el-form-item label="标题" prop="title">
+          <el-input v-model="eventForm.title" placeholder="请输入日程标题" />
         </el-form-item>
 
-        <el-form-item label="Description">
+        <el-form-item label="描述">
           <el-input
             v-model="eventForm.description"
             type="textarea"
             :rows="3"
-            placeholder="Enter event description"
+            placeholder="请输入日程描述"
           />
         </el-form-item>
 
-        <el-form-item label="All Day">
+        <el-form-item label="全天">
           <el-switch v-model="eventForm.isAllDay" />
         </el-form-item>
 
         <el-row :gutter="16">
           <el-col :span="12">
-            <el-form-item label="Start Time" prop="startTime">
+            <el-form-item label="开始时间" prop="startTime">
               <el-date-picker
                 v-model="eventForm.startTime"
                 type="datetime"
-                placeholder="Start time"
+                placeholder="开始时间"
                 format="YYYY-MM-DD HH:mm"
                 value-format="YYYY-MM-DD HH:mm"
                 :disabled="eventForm.isAllDay"
@@ -627,11 +630,11 @@ onUnmounted(() => {
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="End Time" prop="endTime">
+            <el-form-item label="结束时间" prop="endTime">
               <el-date-picker
                 v-model="eventForm.endTime"
                 type="datetime"
-                placeholder="End time"
+                placeholder="结束时间"
                 format="YYYY-MM-DD HH:mm"
                 value-format="YYYY-MM-DD HH:mm"
                 :disabled="eventForm.isAllDay"
@@ -641,7 +644,7 @@ onUnmounted(() => {
           </el-col>
         </el-row>
 
-        <el-form-item label="Color">
+        <el-form-item label="颜色">
           <div class="color-picker-row">
             <div
               v-for="c in PRESET_COLORS"
@@ -654,8 +657,8 @@ onUnmounted(() => {
           </div>
         </el-form-item>
 
-        <el-form-item label="Reminder">
-          <el-select v-model="eventForm.reminder" placeholder="Select reminder" style="width: 100%">
+        <el-form-item label="提醒">
+          <el-select v-model="eventForm.reminder" placeholder="选择提醒时间" style="width: 100%">
             <el-option
               v-for="opt in REMINDER_OPTIONS"
               :key="opt.label"
@@ -673,11 +676,11 @@ onUnmounted(() => {
           @click="handleDeleteEvent(editingEventId!)"
         >
           <el-icon><Delete /></el-icon>
-          Delete
+          删除
         </el-button>
-        <el-button @click="dialogVisible = false">Cancel</el-button>
+        <el-button @click="dialogVisible = false">取消</el-button>
         <el-button type="primary" @click="handleSaveEvent">
-          {{ isEditing ? 'Update' : 'Create' }}
+          {{ isEditing ? '更新' : '创建' }}
         </el-button>
       </template>
     </el-dialog>

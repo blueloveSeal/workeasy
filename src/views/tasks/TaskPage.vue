@@ -5,46 +5,46 @@
     <div class="task-content">
       <!-- Header: Title + View Toggle -->
       <div class="task-header">
-        <h2 class="page-title">Task Management</h2>
+        <h2 class="page-title">任务管理</h2>
         <div class="header-actions">
           <el-radio-group v-model="viewMode" size="default">
             <el-radio-button value="list">
               <el-icon><List /></el-icon>
-              List
+              列表
             </el-radio-button>
             <el-radio-button value="kanban">
               <el-icon><Grid /></el-icon>
-              Kanban
+              看板
             </el-radio-button>
           </el-radio-group>
           <el-button type="primary" @click="openDrawer()">
             <el-icon><Plus /></el-icon>
-            New Task
+            新建任务
           </el-button>
         </div>
       </div>
 
       <!-- Batch Operations Bar -->
       <div v-if="selectedTasks.length > 0" class="batch-bar">
-        <span class="batch-info">{{ selectedTasks.length }} task(s) selected</span>
+        <span class="batch-info">已选择 {{ selectedTasks.length }} 项任务</span>
         <el-button type="danger" size="small" @click="handleBatchDelete">
           <el-icon><Delete /></el-icon>
-          Batch Delete
+          批量删除
         </el-button>
         <el-dropdown @command="handleBatchStatusChange">
           <el-button size="small">
-            Batch Change Status
+            批量更改状态
             <el-icon class="el-icon--right"><ArrowDown /></el-icon>
           </el-button>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item command="todo">To Do</el-dropdown-item>
-              <el-dropdown-item command="in_progress">In Progress</el-dropdown-item>
-              <el-dropdown-item command="done">Done</el-dropdown-item>
+              <el-dropdown-item command="todo">待办</el-dropdown-item>
+              <el-dropdown-item command="in_progress">进行中</el-dropdown-item>
+              <el-dropdown-item command="done">已完成</el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>
-        <el-button size="small" @click="selectedTasks = []">Clear Selection</el-button>
+        <el-button size="small" @click="selectedTasks = []">取消选择</el-button>
       </div>
 
       <!-- ==================== LIST VIEW ==================== -->
@@ -53,30 +53,30 @@
         <div class="filter-bar">
           <el-select
             v-model="filterStatus"
-            placeholder="Filter by status"
+            placeholder="按状态筛选"
             clearable
             style="width: 180px"
           >
-            <el-option label="To Do" value="todo" />
-            <el-option label="In Progress" value="in_progress" />
-            <el-option label="Done" value="done" />
+            <el-option label="待办" value="todo" />
+            <el-option label="进行中" value="in_progress" />
+            <el-option label="已完成" value="done" />
           </el-select>
 
           <el-select
             v-model="filterPriority"
-            placeholder="Filter by priority"
+            placeholder="按优先级筛选"
             clearable
             style="width: 180px"
           >
-            <el-option label="Low" value="low" />
-            <el-option label="Medium" value="medium" />
-            <el-option label="High" value="high" />
-            <el-option label="Urgent" value="urgent" />
+            <el-option label="低" value="low" />
+            <el-option label="中" value="medium" />
+            <el-option label="高" value="high" />
+            <el-option label="紧急" value="urgent" />
           </el-select>
 
           <el-input
             v-model="searchQuery"
-            placeholder="Search tasks..."
+            placeholder="搜索任务..."
             clearable
             style="width: 260px"
           >
@@ -96,7 +96,7 @@
         >
           <el-table-column type="selection" width="50" />
 
-          <el-table-column label="Title" min-width="240">
+          <el-table-column label="标题" min-width="240">
             <template #default="{ row }">
               <span
                 class="task-title-cell"
@@ -108,7 +108,7 @@
             </template>
           </el-table-column>
 
-          <el-table-column label="Priority" width="120" align="center">
+          <el-table-column label="优先级" width="120" align="center">
             <template #default="{ row }">
               <el-tag
                 :color="priorityColor(row.priority)"
@@ -116,12 +116,12 @@
                 size="small"
                 round
               >
-                {{ row.priority }}
+                {{ priorityLabel(row.priority) }}
               </el-tag>
             </template>
           </el-table-column>
 
-          <el-table-column label="Due Date" width="160" align="center">
+          <el-table-column label="截止日期" width="160" align="center">
             <template #default="{ row }">
               <span :class="{ 'overdue-text': isOverdue(row) }">
                 {{ row.dueDate ? dayjs(row.dueDate).format('YYYY-MM-DD') : '--' }}
@@ -129,7 +129,7 @@
             </template>
           </el-table-column>
 
-          <el-table-column label="Status" width="160" align="center">
+          <el-table-column label="状态" width="160" align="center">
             <template #default="{ row }">
               <el-checkbox
                 :model-value="row.status === 'done'"
@@ -142,15 +142,15 @@
             </template>
           </el-table-column>
 
-          <el-table-column label="Actions" width="160" align="center">
+          <el-table-column label="操作" width="160" align="center">
             <template #default="{ row }">
-              <el-button link type="primary" @click="openDrawer(row)">Edit</el-button>
+              <el-button link type="primary" @click="openDrawer(row)">编辑</el-button>
               <el-popconfirm
-                title="Are you sure to delete this task?"
+                title="确定要删除这个任务吗？"
                 @confirm="handleDelete(row.id)"
               >
                 <template #reference>
-                  <el-button link type="danger">Delete</el-button>
+                  <el-button link type="danger">删除</el-button>
                 </template>
               </el-popconfirm>
             </template>
@@ -160,7 +160,7 @@
         <!-- Empty State -->
         <el-empty
           v-if="filteredTasks.length === 0"
-          description="No tasks yet, enjoy the leisure"
+          description="暂无任务，享受清闲吧"
         />
       </template>
 
@@ -231,7 +231,7 @@
     <!-- ==================== TASK DRAWER ==================== -->
     <el-drawer
       v-model="drawerVisible"
-      :title="isEditing ? 'Edit Task' : 'New Task'"
+      :title="isEditing ? '编辑任务' : '新建任务'"
       direction="rtl"
       size="480px"
       :close-on-click-modal="false"
@@ -243,52 +243,52 @@
         label-position="top"
         class="task-form"
       >
-        <el-form-item label="Title" prop="title">
-          <el-input v-model="taskForm.title" placeholder="Enter task title" />
+        <el-form-item label="标题" prop="title">
+          <el-input v-model="taskForm.title" placeholder="请输入任务标题" />
         </el-form-item>
 
-        <el-form-item label="Description" prop="description">
+        <el-form-item label="描述" prop="description">
           <el-input
             v-model="taskForm.description"
             type="textarea"
             :rows="4"
-            placeholder="Enter task description"
+            placeholder="请输入任务描述"
           />
         </el-form-item>
 
         <el-row :gutter="16">
           <el-col :span="12">
-            <el-form-item label="Status" prop="status">
-              <el-select v-model="taskForm.status" placeholder="Select status" style="width: 100%">
-                <el-option label="To Do" value="todo" />
-                <el-option label="In Progress" value="in_progress" />
-                <el-option label="Done" value="done" />
+            <el-form-item label="状态" prop="status">
+              <el-select v-model="taskForm.status" placeholder="选择状态" style="width: 100%">
+                <el-option label="待办" value="todo" />
+                <el-option label="进行中" value="in_progress" />
+                <el-option label="已完成" value="done" />
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="Priority" prop="priority">
-              <el-select v-model="taskForm.priority" placeholder="Select priority" style="width: 100%">
-                <el-option label="Low" value="low" />
-                <el-option label="Medium" value="medium" />
-                <el-option label="High" value="high" />
-                <el-option label="Urgent" value="urgent" />
+            <el-form-item label="优先级" prop="priority">
+              <el-select v-model="taskForm.priority" placeholder="选择优先级" style="width: 100%">
+                <el-option label="低" value="low" />
+                <el-option label="中" value="medium" />
+                <el-option label="高" value="high" />
+                <el-option label="紧急" value="urgent" />
               </el-select>
             </el-form-item>
           </el-col>
         </el-row>
 
-        <el-form-item label="Due Date" prop="dueDate">
+        <el-form-item label="截止日期" prop="dueDate">
           <el-date-picker
             v-model="taskForm.dueDate"
             type="date"
-            placeholder="Select due date"
+            placeholder="选择截止日期"
             value-format="YYYY-MM-DD"
             style="width: 100%"
           />
         </el-form-item>
 
-        <el-form-item label="Tags">
+        <el-form-item label="标签">
           <div class="tags-input">
             <el-tag
               v-for="tag in taskForm.tags"
@@ -314,16 +314,16 @@
               size="small"
               @click="showTagInput"
             >
-              + Add Tag
+              + 添加标签
             </el-button>
           </div>
         </el-form-item>
       </el-form>
 
       <template #footer>
-        <el-button @click="drawerVisible = false">Cancel</el-button>
+        <el-button @click="drawerVisible = false">取消</el-button>
         <el-button type="primary" @click="handleSaveTask">
-          {{ isEditing ? 'Update' : 'Create' }}
+          {{ isEditing ? '更新' : '创建' }}
         </el-button>
       </template>
     </el-drawer>
@@ -386,9 +386,9 @@ const defaultForm = (): TaskFormData => ({
 const taskForm = reactive<TaskFormData>(defaultForm())
 
 const formRules: FormRules = {
-  title: [{ required: true, message: 'Please enter a task title', trigger: 'blur' }],
-  status: [{ required: true, message: 'Please select a status', trigger: 'change' }],
-  priority: [{ required: true, message: 'Please select a priority', trigger: 'change' }],
+  title: [{ required: true, message: '请输入任务标题', trigger: 'blur' }],
+  status: [{ required: true, message: '请选择状态', trigger: 'change' }],
+  priority: [{ required: true, message: '请选择优先级', trigger: 'change' }],
 }
 
 // --- Tags input ---
@@ -428,12 +428,22 @@ const priorityColor = (priority: string): string => {
   return PRIORITY_COLORS[priority] || '#909399'
 }
 
+const priorityLabel = (priority: string): string => {
+  const map: Record<string, string> = {
+    low: '低',
+    medium: '中',
+    high: '高',
+    urgent: '紧急',
+  }
+  return map[priority] || priority
+}
+
 // --- Status helpers ---
 const statusLabel = (status: string): string => {
   const map: Record<string, string> = {
-    todo: 'To Do',
-    in_progress: 'In Progress',
-    done: 'Done',
+    todo: '待办',
+    in_progress: '进行中',
+    done: '已完成',
   }
   return map[status] || status
 }
@@ -481,16 +491,16 @@ const filteredTasks = computed<Task[]>(() => {
 
 // --- Kanban ---
 const kanbanColumns = [
-  { key: 'todo', label: 'To Do', color: '#909399' },
-  { key: 'in_progress', label: 'In Progress', color: '#E6A23C' },
-  { key: 'done', label: 'Done', color: '#67C23A' },
+  { key: 'todo', label: '待办', color: '#909399' },
+  { key: 'in_progress', label: '进行中', color: '#E6A23C' },
+  { key: 'done', label: '已完成', color: '#67C23A' },
 ]
 
 const getColumnTasks = (status: string): Task[] => {
   return filteredTasks.value.filter((t) => t.status === status)
 }
 
-const emptyKanbanText = 'No tasks'
+const emptyKanbanText = '暂无任务'
 
 const handleDrop = (event: DragEvent, newStatus: string) => {
   const taskId = event.dataTransfer?.getData('taskId')
@@ -532,10 +542,10 @@ const handleSaveTask = async () => {
 
     if (isEditing.value && editingTaskId.value) {
       taskStore.update(editingTaskId.value, payload as any)
-      ElMessage.success('Task updated')
+      ElMessage.success('任务已更新')
     } else {
       taskStore.add(payload as any)
-      ElMessage.success('Task created')
+      ElMessage.success('任务已创建')
     }
 
     drawerVisible.value = false
@@ -545,7 +555,7 @@ const handleSaveTask = async () => {
 // --- Delete ---
 const handleDelete = (id: string) => {
   taskStore.remove(id)
-  ElMessage.success('Task deleted')
+  ElMessage.success('任务已删除')
 }
 
 // --- Quick status toggle ---
@@ -563,13 +573,13 @@ const handleSelectionChange = (rows: Task[]) => {
 const handleBatchDelete = async () => {
   try {
     await ElMessageBox.confirm(
-      `Are you sure to delete ${selectedTasks.value.length} task(s)?`,
-      'Batch Delete',
+      `确定要删除选中的 ${selectedTasks.value.length} 项任务吗？`,
+      '批量删除',
       { type: 'warning' }
     )
     selectedTasks.value.forEach((t) => taskStore.remove(t.id))
     selectedTasks.value = []
-    ElMessage.success('Tasks deleted')
+    ElMessage.success('任务已删除')
   } catch {
     // user cancelled
   }
@@ -580,7 +590,7 @@ const handleBatchStatusChange = (status: string) => {
     taskStore.update(t.id, { status: status as Task['status'] })
   })
   selectedTasks.value = []
-  ElMessage.success('Status updated')
+  ElMessage.success('状态已更新')
 }
 </script>
 

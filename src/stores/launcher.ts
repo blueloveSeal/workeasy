@@ -13,7 +13,7 @@ export const PRESET_APPS: Omit<LauncherItem, 'id' | 'order' | 'createdAt'>[] = [
   { name: 'WeChat', protocolUrl: 'weixin://', icon: '\u{1F4AC}', iconType: 'emoji' },
   { name: 'QQ', protocolUrl: 'tencent://', icon: '\u{1F427}', iconType: 'emoji' },
   { name: 'Chrome', protocolUrl: 'google-chrome://', icon: '\u{1F310}', iconType: 'emoji' },
-  { name: 'Explorer', protocolUrl: 'file:///', icon: '\u{1F4C1}', iconType: 'emoji' },
+  { name: '文件管理器', protocolUrl: 'file:///', icon: '\u{1F4C1}', iconType: 'emoji' },
 ]
 
 export const useLauncherStore = defineStore('launcher', () => {

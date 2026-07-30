@@ -52,11 +52,11 @@ function openEditDialog(item: LauncherItem) {
 
 async function handleSubmit() {
   if (!form.value.name.trim()) {
-    ElMessage.warning('Please enter an app name')
+    ElMessage.warning('请输入应用名称')
     return
   }
   if (!form.value.protocolUrl.trim()) {
-    ElMessage.warning('Please enter a protocol URL')
+    ElMessage.warning('请输入协议地址')
     return
   }
 
@@ -71,30 +71,30 @@ async function handleSubmit() {
   try {
     if (isEditing.value && editingId.value) {
       await launcherStore.update(editingId.value, data)
-      ElMessage.success('App updated')
+      ElMessage.success('应用已更新')
     } else {
       await launcherStore.add(data)
-      ElMessage.success('App added')
+      ElMessage.success('应用已添加')
     }
     dialogVisible.value = false
   } catch (error) {
-    ElMessage.error('Operation failed')
+    ElMessage.error('操作失败')
   }
 }
 
 async function handleDelete(item: LauncherItem) {
   try {
     await ElMessageBox.confirm(
-      `Are you sure you want to delete "${item.name}"?`,
-      'Confirm Delete',
+      `确定要删除"${item.name}"吗？`,
+      '确认删除',
       {
-        confirmButtonText: 'Delete',
-        cancelButtonText: 'Cancel',
+        confirmButtonText: '删除',
+        cancelButtonText: '取消',
         type: 'warning',
       }
     )
     await launcherStore.remove(item.id)
-    ElMessage.success('App deleted')
+    ElMessage.success('应用已删除')
   } catch (error) {
     // User cancelled
   }
@@ -103,9 +103,9 @@ async function handleDelete(item: LauncherItem) {
 async function handleAddPresets() {
   try {
     await launcherStore.addPresets()
-    ElMessage.success('Preset apps added')
+    ElMessage.success('预设应用已添加')
   } catch (error) {
-    ElMessage.error('Failed to add presets')
+    ElMessage.error('添加预设失败')
   }
 }
 
@@ -133,14 +133,14 @@ onMounted(() => {
     <TopBar />
     <div class="launcher-content">
       <div class="launcher-header">
-        <h1 class="page-title">App Launcher</h1>
+        <h1 class="page-title">应用启动器</h1>
         <div class="header-actions">
-          <el-button @click="handleAddPresets">Add Presets</el-button>
+          <el-button @click="handleAddPresets">添加预设</el-button>
           <el-button :type="editMode ? 'warning' : 'default'" @click="editMode = !editMode">
-            {{ editMode ? 'Done' : 'Edit Mode' }}
+            {{ editMode ? '完成' : '编辑模式' }}
           </el-button>
           <el-button type="primary" :icon="Plus" @click="openAddDialog">
-            Add App
+            添加应用
           </el-button>
         </div>
       </div>
@@ -170,35 +170,35 @@ onMounted(() => {
               <div class="item-name">{{ item.name }}</div>
               <div class="item-url">{{ item.protocolUrl }}</div>
               <div v-if="editMode" class="item-edit-overlay">
-                <el-button size="small" @click.stop="openEditDialog(item)">Edit</el-button>
-                <el-button size="small" type="danger" @click.stop="handleDelete(item)">Delete</el-button>
+                <el-button size="small" @click.stop="openEditDialog(item)">编辑</el-button>
+                <el-button size="small" type="danger" @click.stop="handleDelete(item)">删除</el-button>
               </div>
             </div>
           </template>
         </draggable>
       </div>
 
-      <el-empty v-else description="No apps in launcher">
+      <el-empty v-else description="启动器暂无应用">
         <div class="empty-actions">
-          <el-button type="primary" @click="openAddDialog">Add Your First App</el-button>
-          <el-button @click="handleAddPresets">Add Preset Apps</el-button>
+          <el-button type="primary" @click="openAddDialog">添加第一个应用</el-button>
+          <el-button @click="handleAddPresets">添加预设应用</el-button>
         </div>
       </el-empty>
     </div>
 
     <el-dialog
       v-model="dialogVisible"
-      :title="isEditing ? 'Edit App' : 'Add App'"
+      :title="isEditing ? '编辑应用' : '添加应用'"
       width="500px"
     >
       <el-form :model="form" label-width="120px">
-        <el-form-item label="Name" required>
-          <el-input v-model="form.name" placeholder="App name" />
+        <el-form-item label="名称" required>
+          <el-input v-model="form.name" placeholder="应用名称" />
         </el-form-item>
-        <el-form-item label="Protocol URL" required>
-          <el-input v-model="form.protocolUrl" placeholder="e.g. vscode:// or steam://open/steam" />
+        <el-form-item label="协议地址" required>
+          <el-input v-model="form.protocolUrl" placeholder="例如 vscode:// 或 steam://open/steam" />
         </el-form-item>
-        <el-form-item label="Icon">
+        <el-form-item label="图标">
           <div class="icon-picker">
             <div class="emoji-grid">
               <span
@@ -209,17 +209,17 @@ onMounted(() => {
                 @click="form.icon = emoji; form.iconType = 'emoji'"
               >{{ emoji }}</span>
             </div>
-            <el-input v-model="form.icon" placeholder="Or enter custom emoji/icon" style="margin-top: 8px" />
+            <el-input v-model="form.icon" placeholder="或输入自定义图标/表情" style="margin-top: 8px" />
           </div>
         </el-form-item>
-        <el-form-item label="Category">
-          <el-input v-model="form.category" placeholder="Optional category" />
+        <el-form-item label="分类">
+          <el-input v-model="form.category" placeholder="可选分类" />
         </el-form-item>
       </el-form>
       <template #footer>
-        <el-button @click="dialogVisible = false">Cancel</el-button>
+        <el-button @click="dialogVisible = false">取消</el-button>
         <el-button type="primary" @click="handleSubmit">
-          {{ isEditing ? 'Update' : 'Add' }}
+          {{ isEditing ? '更新' : '添加' }}
         </el-button>
       </template>
     </el-dialog>

@@ -93,11 +93,11 @@ function openEditDialog(bookmark: Bookmark, event: Event) {
 
 async function handleSubmit() {
   if (!form.value.title.trim()) {
-    ElMessage.warning('Please enter a title')
+    ElMessage.warning('请输入标题')
     return
   }
   if (!form.value.url.trim()) {
-    ElMessage.warning('Please enter a URL')
+    ElMessage.warning('请输入网址')
     return
   }
 
@@ -112,14 +112,14 @@ async function handleSubmit() {
   try {
     if (isEditing.value && editingId.value) {
       await bookmarkStore.update(editingId.value, data)
-      ElMessage.success('Bookmark updated')
+      ElMessage.success('书签已更新')
     } else {
       await bookmarkStore.add(data)
-      ElMessage.success('Bookmark added')
+      ElMessage.success('书签已添加')
     }
     dialogVisible.value = false
   } catch (error) {
-    ElMessage.error('Operation failed')
+    ElMessage.error('操作失败')
   }
 }
 
@@ -127,16 +127,16 @@ async function handleDelete(bookmark: Bookmark, event: Event) {
   event.stopPropagation()
   try {
     await ElMessageBox.confirm(
-      `Are you sure you want to delete "${bookmark.title}"?`,
-      'Confirm Delete',
+      `确定要删除"${bookmark.title}"吗？`,
+      '确认删除',
       {
-        confirmButtonText: 'Delete',
-        cancelButtonText: 'Cancel',
+        confirmButtonText: '删除',
+        cancelButtonText: '取消',
         type: 'warning',
       }
     )
     await bookmarkStore.remove(bookmark.id)
-    ElMessage.success('Bookmark deleted')
+    ElMessage.success('书签已删除')
   } catch (error) {
     // User cancelled
   }
@@ -157,12 +157,12 @@ onMounted(() => {
     <div class="bookmark-content">
       <div class="bookmark-header">
         <div class="header-left">
-          <h1 class="page-title">Bookmarks</h1>
+          <h1 class="page-title">书签</h1>
           <el-tabs v-model="activeCategory" class="category-tabs">
             <el-tab-pane
               v-for="cat in categories"
               :key="cat"
-              :label="cat === 'all' ? 'All' : cat"
+              :label="cat === 'all' ? '全部' : cat"
               :name="cat"
             />
           </el-tabs>
@@ -170,12 +170,12 @@ onMounted(() => {
         <div class="header-right">
           <el-input
             v-model="searchQuery"
-            placeholder="Search bookmarks..."
+            placeholder="搜索书签..."
             clearable
             style="width: 240px"
           />
           <el-button type="primary" :icon="Plus" @click="openAddDialog">
-            Add Bookmark
+            添加书签
           </el-button>
         </div>
       </div>
@@ -224,31 +224,31 @@ onMounted(() => {
         </div>
       </div>
 
-      <el-empty v-else description="No bookmarks yet">
-        <el-button type="primary" @click="openAddDialog">Add Your First Bookmark</el-button>
+      <el-empty v-else description="暂无书签">
+        <el-button type="primary" @click="openAddDialog">添加第一个书签</el-button>
       </el-empty>
     </div>
 
     <el-dialog
       v-model="dialogVisible"
-      :title="isEditing ? 'Edit Bookmark' : 'Add Bookmark'"
+      :title="isEditing ? '编辑书签' : '添加书签'"
       width="500px"
     >
       <el-form :model="form" label-width="100px">
-        <el-form-item label="Title" required>
-          <el-input v-model="form.title" placeholder="Enter bookmark title" />
+        <el-form-item label="标题" required>
+          <el-input v-model="form.title" placeholder="请输入书签标题" />
         </el-form-item>
-        <el-form-item label="URL" required>
+        <el-form-item label="网址" required>
           <el-input v-model="form.url" placeholder="https://example.com" />
         </el-form-item>
-        <el-form-item label="Category">
-          <el-input v-model="form.category" placeholder="Optional category" />
+        <el-form-item label="分类">
+          <el-input v-model="form.category" placeholder="可选分类" />
         </el-form-item>
       </el-form>
       <template #footer>
-        <el-button @click="dialogVisible = false">Cancel</el-button>
+        <el-button @click="dialogVisible = false">取消</el-button>
         <el-button type="primary" @click="handleSubmit">
-          {{ isEditing ? 'Update' : 'Add' }}
+          {{ isEditing ? '更新' : '添加' }}
         </el-button>
       </template>
     </el-dialog>

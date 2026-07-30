@@ -19,9 +19,9 @@ function launchApp(item: { protocolUrl: string }) {
 <template>
   <div class="launcher-section">
     <div class="launcher-header">
-      <h3 class="section-title">Quick Launch</h3>
+      <h3 class="section-title">快速启动</h3>
       <el-button text size="small" @click="router.push('/launcher')">
-        Manage
+        管理
       </el-button>
     </div>
 
@@ -48,14 +48,14 @@ function launchApp(item: { protocolUrl: string }) {
         <div class="icon-wrapper">
           <el-icon :size="24"><Plus /></el-icon>
         </div>
-        <span class="icon-name">Add</span>
+        <span class="icon-name">添加</span>
       </div>
     </div>
 
     <div v-else class="launcher-empty">
-      <el-empty description="No apps yet" :image-size="80">
+      <el-empty description="暂无应用" :image-size="80">
         <el-button type="primary" size="small" @click="router.push('/launcher')">
-          Add Apps
+          添加应用
         </el-button>
       </el-empty>
     </div>

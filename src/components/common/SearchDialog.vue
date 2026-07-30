@@ -12,9 +12,9 @@ watch(() => searchStore.query, (val) => {
 })
 
 const moduleLabels = {
-  task: 'Tasks',
-  note: 'Notes',
-  bookmark: 'Bookmarks',
+  task: '任务',
+  note: '笔记',
+  bookmark: '书签',
 }
 </script>
 
@@ -30,7 +30,7 @@ const moduleLabels = {
       <el-icon :size="20" class="search-icon"><Search /></el-icon>
       <input
         v-model="searchStore.query"
-        placeholder="Search tasks, notes, bookmarks..."
+        placeholder="搜索任务、笔记、书签..."
         class="search-input"
         autofocus
       />
@@ -51,7 +51,7 @@ const moduleLabels = {
     </div>
 
     <div v-else-if="searchStore.query.trim()" class="search-empty">
-      No results found
+      未找到结果
     </div>
   </el-dialog>
 </template>

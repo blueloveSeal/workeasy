@@ -18,17 +18,17 @@ function formatTime(dateStr: string) {
 </script>
 
 <template>
-  <AppCard title="Notes" :subtitle="noteStore.notes.length + ' total'">
+  <AppCard title="笔记" :subtitle="noteStore.notes.length + ' 篇笔记'">
     <template #actions>
-      <el-button text size="small" @click="router.push('/notes')">View All</el-button>
+      <el-button text size="small" @click="router.push('/notes')">查看全部</el-button>
     </template>
     <div v-if="recentNotes.length" class="note-list">
       <div v-for="note in recentNotes" :key="note.id" class="note-item">
-        <span class="note-title">{{ note.title || 'Untitled' }}</span>
+        <span class="note-title">{{ note.title || '无标题' }}</span>
         <span class="note-time">{{ formatTime(note.updatedAt) }}</span>
       </div>
     </div>
-    <div v-else class="empty-hint">No notes yet</div>
+    <div v-else class="empty-hint">暂无笔记</div>
   </AppCard>
 </template>
 
