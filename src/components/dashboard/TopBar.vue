@@ -67,7 +67,7 @@ const dateStr = computed(() => now.value.format('YYYY-MM-DD dddd'))
   justify-content: space-between;
   height: 64px;
   padding: 0 24px;
-  background: var(--bg-card);
+  background: transparent;
   border-bottom: 1px solid var(--border-color);
   position: sticky;
   top: 0;

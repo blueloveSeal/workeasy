@@ -73,7 +73,7 @@ const menuItems = [
 }
 
 .sidebar {
-  background: var(--bg-sidebar);
+  background: transparent;
   border-right: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
@@ -146,6 +146,6 @@ const menuItems = [
 .main-container {
   flex: 1;
   overflow: hidden;
-  background: var(--bg-primary);
+  background: transparent;
 }
 </style>
