@@ -54,13 +54,13 @@ const menuItems = [
       </div>
     </el-aside>
 
-    <el-container class="main-container">
+    <div class="main-container">
       <router-view v-slot="{ Component }">
         <transition name="fade-slide" mode="out-in">
           <component :is="Component" />
         </transition>
       </router-view>
-    </el-container>
+    </div>
   </div>
 </template>
 
