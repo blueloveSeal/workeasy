@@ -67,7 +67,9 @@ const dateStr = computed(() => now.value.format('YYYY-MM-DD dddd'))
   justify-content: space-between;
   height: 64px;
   padding: 0 24px;
-  background: transparent;
+  background: var(--topbar-bg);
+  backdrop-filter: blur(12px) saturate(1.2);
+  -webkit-backdrop-filter: blur(12px) saturate(1.2);
   border-bottom: 1px solid var(--border-color);
   position: sticky;
   top: 0;
@@ -85,6 +87,7 @@ const dateStr = computed(() => now.value.format('YYYY-MM-DD dddd'))
   font-weight: 700;
   color: var(--text-primary);
   font-variant-numeric: tabular-nums;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .date-greeting {
@@ -96,11 +99,13 @@ const dateStr = computed(() => now.value.format('YYYY-MM-DD dddd'))
 .date-text {
   font-size: 13px;
   color: var(--text-secondary);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
 }
 
 .greeting-text {
   font-size: 12px;
   color: var(--text-muted);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
 }
 
 .topbar-center {

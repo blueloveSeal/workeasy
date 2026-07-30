@@ -73,7 +73,9 @@ const menuItems = [
 }
 
 .sidebar {
-  background: transparent;
+  background: var(--sidebar-bg);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
   border-right: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;

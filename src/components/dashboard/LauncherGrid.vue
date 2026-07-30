@@ -79,6 +79,7 @@ function launchApp(item: { protocolUrl: string }) {
   font-weight: 600;
   color: var(--text-primary);
   margin: 0;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.08);
 }
 
 .launcher-grid {
@@ -137,6 +138,7 @@ function launchApp(item: { protocolUrl: string }) {
   text-overflow: ellipsis;
   white-space: nowrap;
   max-width: 72px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .add-icon .icon-wrapper {
