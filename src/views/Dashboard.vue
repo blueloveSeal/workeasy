@@ -3,7 +3,6 @@ import TopBar from '@/components/dashboard/TopBar.vue'
 import LauncherGrid from '@/components/dashboard/LauncherGrid.vue'
 import TaskSummary from '@/components/dashboard/TaskSummary.vue'
 import NoteSummary from '@/components/dashboard/NoteSummary.vue'
-import CalendarSummary from '@/components/dashboard/CalendarSummary.vue'
 import BookmarkSummary from '@/components/dashboard/BookmarkSummary.vue'
 import SearchDialog from '@/components/common/SearchDialog.vue'
 </script>
@@ -18,12 +17,9 @@ import SearchDialog from '@/components/common/SearchDialog.vue'
           <TaskSummary />
         </div>
         <div class="stagger-item" style="animation-delay: 50ms">
-          <CalendarSummary />
-        </div>
-        <div class="stagger-item" style="animation-delay: 100ms">
           <NoteSummary />
         </div>
-        <div class="stagger-item" style="animation-delay: 150ms">
+        <div class="stagger-item" style="animation-delay: 100ms">
           <BookmarkSummary />
         </div>
       </div>

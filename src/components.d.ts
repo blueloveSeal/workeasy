@@ -14,7 +14,6 @@ declare module 'vue' {
     AppCard: typeof import('./components/common/AppCard.vue')['default']
     BackgroundLayer: typeof import('./components/layout/BackgroundLayer.vue')['default']
     BookmarkSummary: typeof import('./components/dashboard/BookmarkSummary.vue')['default']
-    CalendarSummary: typeof import('./components/dashboard/CalendarSummary.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox']

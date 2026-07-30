@@ -5,7 +5,6 @@ import {
   Grid,
   List,
   Notebook,
-  Calendar,
   Star,
   Setting,
   Expand,
@@ -19,7 +18,6 @@ const menuItems = [
   { index: '/launcher', title: '启动器', icon: Grid },
   { index: '/tasks', title: '任务', icon: List },
   { index: '/notes', title: '笔记', icon: Notebook },
-  { index: '/calendar', title: '日历', icon: Calendar },
   { index: '/bookmarks', title: '书签', icon: Star },
   { index: '/settings', title: '设置', icon: Setting },
 ]

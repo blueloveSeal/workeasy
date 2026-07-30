@@ -10,7 +10,6 @@ const router = createRouter({
         { path: '', name: 'Dashboard', component: () => import('@/views/Dashboard.vue') },
         { path: 'tasks', name: 'Tasks', component: () => import('@/views/tasks/TaskPage.vue') },
         { path: 'notes', name: 'Notes', component: () => import('@/views/notes/NotePage.vue') },
-        { path: 'calendar', name: 'Calendar', component: () => import('@/views/calendar/CalendarPage.vue') },
         { path: 'bookmarks', name: 'Bookmarks', component: () => import('@/views/bookmarks/BookmarkPage.vue') },
         { path: 'launcher', name: 'Launcher', component: () => import('@/views/launcher/LauncherPage.vue') },
         { path: 'settings', name: 'Settings', component: () => import('@/views/settings/SettingsPage.vue') },
