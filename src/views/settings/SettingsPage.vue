@@ -265,7 +265,7 @@ async function handleClearAll() {
                 :max="80"
                 :step="1"
                 style="width: 200px"
-                @change="handleOverlayChange"
+                @change="(val) => handleOverlayChange(val as number)"
               />
             </div>
 

@@ -88,7 +88,7 @@
 
         <!-- Task Table -->
         <el-table
-          :data="filteredTasks"
+          :data="filteredTasks as any[]"
           :row-class-name="tableRowClassName"
           @selection-change="handleSelectionChange"
           stripe
@@ -100,10 +100,10 @@
             <template #default="{ row }">
               <span
                 class="task-title-cell"
-                :class="{ 'task-title--done': row.status === 'done' }"
-                @click="openDrawer(row)"
+                :class="{ 'task-title--done': (row as Task).status === 'done' }"
+                @click="openDrawer(row as Task)"
               >
-                {{ row.title }}
+                {{ (row as Task).title }}
               </span>
             </template>
           </el-table-column>
@@ -111,20 +111,20 @@
           <el-table-column label="优先级" width="120" align="center">
             <template #default="{ row }">
               <el-tag
-                :color="priorityColor(row.priority)"
+                :color="priorityColor((row as Task).priority)"
                 effect="dark"
                 size="small"
                 round
               >
-                {{ priorityLabel(row.priority) }}
+                {{ priorityLabel((row as Task).priority) }}
               </el-tag>
             </template>
           </el-table-column>
 
           <el-table-column label="截止日期" width="160" align="center">
             <template #default="{ row }">
-              <span :class="{ 'overdue-text': isOverdue(row) }">
-                {{ row.dueDate ? dayjs(row.dueDate).format('YYYY-MM-DD') : '--' }}
+              <span :class="{ 'overdue-text': isOverdue(row as Task) }">
+                {{ (row as Task).dueDate ? dayjs((row as Task).dueDate).format('YYYY-MM-DD') : '--' }}
               </span>
             </template>
           </el-table-column>
@@ -132,11 +132,11 @@
           <el-table-column label="状态" width="160" align="center">
             <template #default="{ row }">
               <el-checkbox
-                :model-value="row.status === 'done'"
-                @change="(val: boolean) => toggleStatus(row, val)"
+                :model-value="(row as Task).status === 'done'"
+                @change="(val) => toggleStatus(row as Task, !!val)"
               >
-                <el-tag :type="statusTagType(row.status)" size="small">
-                  {{ statusLabel(row.status) }}
+                <el-tag :type="statusTagType((row as Task).status)" size="small">
+                  {{ statusLabel((row as Task).status) }}
                 </el-tag>
               </el-checkbox>
             </template>
@@ -144,10 +144,10 @@
 
           <el-table-column label="操作" width="160" align="center">
             <template #default="{ row }">
-              <el-button link type="primary" @click="openDrawer(row)">编辑</el-button>
+              <el-button link type="primary" @click="openDrawer(row as Task)">编辑</el-button>
               <el-popconfirm
                 title="确定要删除这个任务吗？"
-                @confirm="handleDelete(row.id)"
+                @confirm="handleDelete((row as Task).id)"
               >
                 <template #reference>
                   <el-button link type="danger">删除</el-button>
@@ -448,13 +448,13 @@ const statusLabel = (status: string): string => {
   return map[status] || status
 }
 
-const statusTagType = (status: string): '' | 'success' | 'warning' | 'info' => {
-  const map: Record<string, '' | 'success' | 'warning' | 'info'> = {
+const statusTagType = (status: string): 'primary' | 'success' | 'warning' | 'info' | 'danger' | undefined => {
+  const map: Record<string, 'primary' | 'success' | 'warning' | 'info' | 'danger' | undefined> = {
     todo: 'info',
     in_progress: 'warning',
     done: 'success',
   }
-  return map[status] || ''
+  return map[status] || undefined
 }
 
 // --- Overdue ---
