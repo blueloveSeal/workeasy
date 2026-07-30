@@ -72,11 +72,10 @@ async function handleExport() {
   isExporting.value = true
   try {
     const data = {
-      version: '1.0.0',
+      version: '2.0.0',
       exportedAt: new Date().toISOString(),
       tasks: await db.tasks.toArray(),
       notes: await db.notes.toArray(),
-      events: await db.events.toArray(),
       bookmarks: await db.bookmarks.toArray(),
       launcherItems: await db.launcherItems.toArray(),
       themeSettings: await db.themeSettings.toArray(),
@@ -126,9 +125,7 @@ async function handleImport(file: UploadRawFile) {
     if (data.notes?.length) {
       await db.notes.bulkPut(data.notes)
     }
-    if (data.events?.length) {
-      await db.events.bulkPut(data.events)
-    }
+    // v2.0.0+ backups do not include events (calendar module removed)
     if (data.bookmarks?.length) {
       await db.bookmarks.bulkPut(data.bookmarks)
     }
@@ -174,7 +171,6 @@ async function handleClearAll() {
 
     await db.tasks.clear()
     await db.notes.clear()
-    await db.events.clear()
     await db.bookmarks.clear()
     await db.launcherItems.clear()
     await db.themeSettings.clear()
