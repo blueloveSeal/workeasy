@@ -1009,6 +1009,7 @@ onUnmounted(() => {
   width: 72px;
   flex-shrink: 0;
   border-right: 1px solid var(--border-color);
+  min-height: 1080px; /* 18 hours * 60px */
 }
 
 .time-gutter-cell {
@@ -1024,6 +1025,7 @@ onUnmounted(() => {
   flex: 1;
   position: relative;
   border-right: 1px solid var(--border-color);
+  min-height: 1080px; /* 18 hours * 60px */
 }
 
 .week-day-column:last-child {
@@ -1121,6 +1123,7 @@ onUnmounted(() => {
 .day-column {
   flex: 1;
   position: relative;
+  min-height: 1080px; /* 18 hours * 60px */
 }
 
 .day-event-block {
