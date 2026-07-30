@@ -29,6 +29,7 @@ export const useThemeStore = defineStore('theme', () => {
 
   function applyTheme() {
     document.documentElement.setAttribute('data-theme', mode.value)
+    document.documentElement.classList.toggle('dark', mode.value === 'dark')
   }
 
   async function toggleTheme() {

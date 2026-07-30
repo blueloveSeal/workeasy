@@ -597,7 +597,7 @@ const handleBatchStatusChange = (status: string) => {
 <style scoped>
 .task-page {
   min-height: 100vh;
-  background: var(--bg-page, #f5f7fa);
+  background: var(--bg-primary);
   display: flex;
   flex-direction: column;
 }
@@ -605,7 +605,7 @@ const handleBatchStatusChange = (status: string) => {
 .task-content {
   flex: 1;
   padding: 24px 32px;
-  background: var(--bg-card, #ffffff);
+  background: var(--bg-card);
   margin: 16px 24px 24px;
   border-radius: 12px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
@@ -622,7 +622,7 @@ const handleBatchStatusChange = (status: string) => {
 .page-title {
   font-size: 22px;
   font-weight: 600;
-  color: var(--text-primary, #1f2937);
+  color: var(--text-primary);
   margin: 0;
 }
 
@@ -639,13 +639,13 @@ const handleBatchStatusChange = (status: string) => {
   gap: 12px;
   padding: 10px 16px;
   margin-bottom: 16px;
-  background: var(--bg-secondary, #f0f2f5);
+  background: var(--bg-secondary);
   border-radius: 8px;
 }
 
 .batch-info {
   font-size: 14px;
-  color: var(--text-secondary, #6b7280);
+  color: var(--text-secondary);
   margin-right: auto;
 }
 
@@ -662,12 +662,12 @@ const handleBatchStatusChange = (status: string) => {
 .task-title-cell {
   cursor: pointer;
   font-weight: 500;
-  color: var(--text-primary, #1f2937);
+  color: var(--text-primary);
   transition: color 0.2s;
 }
 
 .task-title-cell:hover {
-  color: var(--el-color-primary, #409eff);
+  color: var(--color-primary);
 }
 
 .task-title--done {
@@ -676,7 +676,7 @@ const handleBatchStatusChange = (status: string) => {
 }
 
 .overdue-text {
-  color: #EF4444;
+  color: var(--color-danger);
   font-weight: 600;
 }
 
@@ -698,7 +698,7 @@ const handleBatchStatusChange = (status: string) => {
 .kanban-column {
   flex: 1;
   min-width: 260px;
-  background: var(--bg-secondary, #f9fafb);
+  background: var(--bg-secondary);
   border-radius: 10px;
   border-top: 3px solid #909399;
   display: flex;
@@ -715,7 +715,7 @@ const handleBatchStatusChange = (status: string) => {
 .kanban-column-title {
   font-size: 15px;
   font-weight: 600;
-  color: var(--text-primary, #1f2937);
+  color: var(--text-primary);
 }
 
 .kanban-column-body {
@@ -725,7 +725,7 @@ const handleBatchStatusChange = (status: string) => {
 }
 
 .kanban-card {
-  background: var(--bg-card, #ffffff);
+  background: var(--bg-card);
   border-radius: 8px;
   padding: 14px;
   margin-bottom: 10px;
@@ -744,13 +744,13 @@ const handleBatchStatusChange = (status: string) => {
 }
 
 .kanban-card--overdue {
-  border-left: 3px solid #EF4444;
+  border-left: 3px solid var(--color-danger);
 }
 
 .kanban-card-title {
   font-size: 14px;
   font-weight: 500;
-  color: var(--text-primary, #1f2937);
+  color: var(--text-primary);
   margin-bottom: 8px;
 }
 
@@ -762,7 +762,7 @@ const handleBatchStatusChange = (status: string) => {
 
 .kanban-card-date {
   font-size: 12px;
-  color: var(--text-secondary, #6b7280);
+  color: var(--text-secondary);
 }
 
 .kanban-card-tags {

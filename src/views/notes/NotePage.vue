@@ -86,7 +86,7 @@
           <MdEditor
             v-model="currentNote.content"
             language="zh-CN"
-            theme="light"
+            :theme="editorTheme"
             class="markdown-editor"
             @on-change="handleContentChange"
           />
@@ -109,9 +109,11 @@ import 'md-editor-v3/lib/style.css'
 import TopBar from '@/components/dashboard/TopBar.vue'
 import SearchDialog from '@/components/common/SearchDialog.vue'
 import { useNoteStore } from '@/stores/note'
+import { useThemeStore } from '@/stores/theme'
 import type { Note } from '@/types/note'
 
 const noteStore = useNoteStore()
+const themeStore = useThemeStore()
 
 const searchQuery = ref('')
 const selectedCategory = ref('')
@@ -126,6 +128,8 @@ const categories = computed(() => {
   })
   return Array.from(cats)
 })
+
+const editorTheme = computed(() => themeStore.mode === 'dark' ? 'dark' : 'light')
 
 const filteredNotes = computed(() => {
   let notes = [...noteStore.notes]

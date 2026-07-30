@@ -693,7 +693,7 @@ onUnmounted(() => {
 <style scoped>
 .calendar-page {
   min-height: 100vh;
-  background: var(--bg-page, #f5f7fa);
+  background: var(--bg-primary);
   display: flex;
   flex-direction: column;
 }
@@ -717,7 +717,7 @@ onUnmounted(() => {
 .page-title {
   font-size: 22px;
   font-weight: 600;
-  color: var(--text-primary, #1f2937);
+  color: var(--text-primary);
   margin: 0;
 }
 
@@ -744,7 +744,7 @@ onUnmounted(() => {
 .nav-title {
   font-size: 18px;
   font-weight: 600;
-  color: var(--text-primary, #1f2937);
+  color: var(--text-primary);
 }
 
 /* =============================================
@@ -761,7 +761,7 @@ onUnmounted(() => {
   flex: 1;
   display: flex;
   flex-direction: column;
-  background: var(--bg-card, #fff);
+  background: var(--bg-card);
   border-radius: 12px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
   overflow: hidden;
@@ -770,7 +770,7 @@ onUnmounted(() => {
 .weekday-header {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  border-bottom: 1px solid var(--border-color, #e5e7eb);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .weekday-cell {
@@ -778,7 +778,7 @@ onUnmounted(() => {
   padding: 10px 0;
   font-size: 13px;
   font-weight: 600;
-  color: var(--text-secondary, #6b7280);
+  color: var(--text-secondary);
 }
 
 .month-grid {
@@ -789,8 +789,8 @@ onUnmounted(() => {
 }
 
 .month-day-cell {
-  border-right: 1px solid var(--border-color, #e5e7eb);
-  border-bottom: 1px solid var(--border-color, #e5e7eb);
+  border-right: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
   padding: 6px 8px;
   min-height: 90px;
   cursor: pointer;
@@ -803,7 +803,7 @@ onUnmounted(() => {
 }
 
 .month-day-cell:hover {
-  background: var(--bg-secondary, #f9fafb);
+  background: var(--bg-secondary);
 }
 
 .month-day-cell.is-other-month {
@@ -811,7 +811,7 @@ onUnmounted(() => {
 }
 
 .month-day-cell.is-today .day-number {
-  background: var(--el-color-primary, #409eff);
+  background: var(--color-primary);
   color: #fff;
   border-radius: 50%;
   width: 26px;
@@ -822,13 +822,13 @@ onUnmounted(() => {
 }
 
 .month-day-cell.is-selected {
-  background: var(--el-color-primary-light-9, #ecf5ff);
+  background: var(--el-color-primary-light-9);
 }
 
 .day-number {
   font-size: 13px;
   font-weight: 500;
-  color: var(--text-primary, #1f2937);
+  color: var(--text-primary);
   margin-bottom: 4px;
   display: inline-block;
 }
@@ -850,7 +850,7 @@ onUnmounted(() => {
 }
 
 .event-dot-row:hover {
-  background: var(--bg-secondary, #f0f2f5);
+  background: var(--bg-secondary);
 }
 
 .event-dot {
@@ -862,7 +862,7 @@ onUnmounted(() => {
 
 .event-dot-title {
   font-size: 11px;
-  color: var(--text-primary, #1f2937);
+  color: var(--text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -870,14 +870,14 @@ onUnmounted(() => {
 
 .event-more {
   font-size: 11px;
-  color: var(--text-muted, #9ca3af);
+  color: var(--text-muted);
   padding-left: 4px;
 }
 
 /* --- Side Panel --- */
 .side-panel {
   width: 300px;
-  background: var(--bg-card, #fff);
+  background: var(--bg-card);
   border-radius: 12px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
   display: flex;
@@ -890,14 +890,14 @@ onUnmounted(() => {
   align-items: center;
   justify-content: space-between;
   padding: 16px 20px;
-  border-bottom: 1px solid var(--border-color, #e5e7eb);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .side-panel-header h3 {
   margin: 0;
   font-size: 16px;
   font-weight: 600;
-  color: var(--text-primary, #1f2937);
+  color: var(--text-primary);
 }
 
 .side-panel-body {
@@ -907,29 +907,29 @@ onUnmounted(() => {
 }
 
 .side-event-card {
-  border-left: 3px solid #409eff;
+  border-left: 3px solid var(--color-primary);
   padding: 12px;
   margin-bottom: 10px;
-  background: var(--bg-secondary, #f9fafb);
+  background: var(--bg-secondary);
   border-radius: 0 8px 8px 0;
 }
 
 .side-event-title {
   font-size: 14px;
   font-weight: 600;
-  color: var(--text-primary, #1f2937);
+  color: var(--text-primary);
   margin-bottom: 4px;
 }
 
 .side-event-time {
   font-size: 12px;
-  color: var(--text-secondary, #6b7280);
+  color: var(--text-secondary);
   margin-bottom: 4px;
 }
 
 .side-event-desc {
   font-size: 12px;
-  color: var(--text-muted, #9ca3af);
+  color: var(--text-muted);
   margin-bottom: 6px;
 }
 
@@ -941,7 +941,7 @@ onUnmounted(() => {
 .side-panel-empty {
   text-align: center;
   padding: 40px 16px;
-  color: var(--text-muted, #9ca3af);
+  color: var(--text-muted);
   font-size: 14px;
 }
 
@@ -952,7 +952,7 @@ onUnmounted(() => {
   flex: 1;
   display: flex;
   flex-direction: column;
-  background: var(--bg-card, #fff);
+  background: var(--bg-card);
   border-radius: 12px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
   overflow: hidden;
@@ -960,7 +960,7 @@ onUnmounted(() => {
 
 .week-allday-row {
   display: flex;
-  border-bottom: 1px solid var(--border-color, #e5e7eb);
+  border-bottom: 1px solid var(--border-color);
   min-height: 36px;
 }
 
@@ -968,17 +968,17 @@ onUnmounted(() => {
   width: 60px;
   flex-shrink: 0;
   font-size: 11px;
-  color: var(--text-muted, #9ca3af);
+  color: var(--text-muted);
   display: flex;
   align-items: center;
   justify-content: center;
-  border-right: 1px solid var(--border-color, #e5e7eb);
+  border-right: 1px solid var(--border-color);
 }
 
 .week-allday-cell {
   flex: 1;
   padding: 4px;
-  border-right: 1px solid var(--border-color, #e5e7eb);
+  border-right: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -1008,12 +1008,12 @@ onUnmounted(() => {
 .time-gutter {
   width: 60px;
   flex-shrink: 0;
-  border-right: 1px solid var(--border-color, #e5e7eb);
+  border-right: 1px solid var(--border-color);
 }
 
 .time-gutter-cell {
   font-size: 11px;
-  color: var(--text-muted, #9ca3af);
+  color: var(--text-muted);
   text-align: right;
   padding-right: 8px;
   position: relative;
@@ -1023,7 +1023,7 @@ onUnmounted(() => {
 .week-day-column {
   flex: 1;
   position: relative;
-  border-right: 1px solid var(--border-color, #e5e7eb);
+  border-right: 1px solid var(--border-color);
 }
 
 .week-day-column:last-child {
@@ -1031,17 +1031,17 @@ onUnmounted(() => {
 }
 
 .week-day-column.is-today {
-  background: var(--el-color-primary-light-9, #ecf5ff);
+  background: var(--el-color-primary-light-9);
 }
 
 .hour-line {
-  border-bottom: 1px solid var(--border-color, #e5e7eb);
+  border-bottom: 1px solid var(--border-color);
   cursor: pointer;
   transition: background 0.15s;
 }
 
 .hour-line:hover {
-  background: var(--bg-secondary, #f9fafb);
+  background: var(--bg-secondary);
 }
 
 .week-event-block {
@@ -1083,7 +1083,7 @@ onUnmounted(() => {
   flex: 1;
   display: flex;
   flex-direction: column;
-  background: var(--bg-card, #fff);
+  background: var(--bg-card);
   border-radius: 12px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
   overflow: hidden;
@@ -1092,14 +1092,14 @@ onUnmounted(() => {
 .day-allday-row {
   display: flex;
   padding: 8px 12px;
-  border-bottom: 1px solid var(--border-color, #e5e7eb);
+  border-bottom: 1px solid var(--border-color);
   gap: 12px;
   align-items: center;
 }
 
 .day-allday-label {
   font-size: 12px;
-  color: var(--text-muted, #9ca3af);
+  color: var(--text-muted);
   width: 60px;
   flex-shrink: 0;
   text-align: right;
@@ -1176,7 +1176,7 @@ onUnmounted(() => {
 }
 
 .color-swatch.active {
-  border-color: var(--text-primary, #1f2937);
+  border-color: var(--text-primary);
   transform: scale(1.15);
 }
 </style>
