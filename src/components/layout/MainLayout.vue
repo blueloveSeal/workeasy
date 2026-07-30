@@ -13,7 +13,6 @@ import {
 } from '@element-plus/icons-vue'
 
 const isCollapsed = ref(false)
-const isAnimating = ref(false)
 
 const menuItems = [
   { index: '/', title: '首页', icon: HomeFilled },
@@ -24,17 +23,11 @@ const menuItems = [
   { index: '/bookmarks', title: '书签', icon: Star },
   { index: '/settings', title: '设置', icon: Setting },
 ]
-
-function toggleSidebar() {
-  isAnimating.value = true
-  isCollapsed.value = !isCollapsed.value
-  setTimeout(() => { isAnimating.value = false }, 300)
-}
 </script>
 
 <template>
   <div class="main-layout">
-    <el-aside :width="isCollapsed ? '64px' : '220px'" class="sidebar" :class="{ 'is-animating': isAnimating }">
+    <el-aside :width="isCollapsed ? '64px' : '220px'" class="sidebar">
       <div class="sidebar-header">
         <span v-show="!isCollapsed" class="logo-text">WorkEasy</span>
         <span v-show="isCollapsed" class="logo-icon">W</span>
@@ -42,6 +35,7 @@ function toggleSidebar() {
       <el-menu
         :default-active="$route.path"
         :collapse="isCollapsed"
+        :collapse-transition="false"
         router
         class="sidebar-menu"
       >
@@ -54,7 +48,7 @@ function toggleSidebar() {
           <template #title>{{ item.title }}</template>
         </el-menu-item>
       </el-menu>
-      <div class="sidebar-toggle" @click="toggleSidebar">
+      <div class="sidebar-toggle" @click="isCollapsed = !isCollapsed">
         <el-icon :size="16">
           <component :is="isCollapsed ? Expand : Fold" />
         </el-icon>
@@ -86,13 +80,7 @@ function toggleSidebar() {
   border-right: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
-  transition: width 0.3s ease;
   overflow: hidden;
-}
-
-.sidebar.is-animating {
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
 }
 
 .sidebar-header {
