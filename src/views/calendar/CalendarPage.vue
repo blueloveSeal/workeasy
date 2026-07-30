@@ -965,7 +965,7 @@ onUnmounted(() => {
 }
 
 .time-gutter-label {
-  width: 60px;
+  width: 72px;
   flex-shrink: 0;
   font-size: 11px;
   color: var(--text-muted);
@@ -1006,7 +1006,7 @@ onUnmounted(() => {
 }
 
 .time-gutter {
-  width: 60px;
+  width: 72px;
   flex-shrink: 0;
   border-right: 1px solid var(--border-color);
 }
@@ -1015,7 +1015,7 @@ onUnmounted(() => {
   font-size: 11px;
   color: var(--text-muted);
   text-align: right;
-  padding-right: 8px;
+  padding: 0 10px 0 4px;
   position: relative;
   top: -6px;
 }
@@ -1100,10 +1100,10 @@ onUnmounted(() => {
 .day-allday-label {
   font-size: 12px;
   color: var(--text-muted);
-  width: 60px;
+  width: 72px;
   flex-shrink: 0;
-  text-align: right;
-  padding-right: 12px;
+  text-align: center;
+  padding-right: 0;
 }
 
 .day-allday-events {
