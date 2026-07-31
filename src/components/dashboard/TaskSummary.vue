@@ -15,7 +15,18 @@ const newTaskTitle = ref('')
 const adding = ref(false)
 
 const todayTasks = computed(() =>
-  taskStore.tasks.filter(t => t.dueDate === today && t.status !== 'done')
+  taskStore.tasks
+    .filter(t => t.dueDate === today)
+    .sort((a, b) => {
+      // undone first, done last
+      if (a.status === 'done' && b.status !== 'done') return 1
+      if (a.status !== 'done' && b.status === 'done') return -1
+      return 0
+    })
+)
+
+const doneCount = computed(() =>
+  todayTasks.value.filter(t => t.status === 'done').length
 )
 
 const overdueCount = computed(() =>
@@ -61,15 +72,19 @@ async function deleteTask(id: string) {
 </script>
 
 <template>
-  <AppCard title="任务" :subtitle="todayTasks.length + ' 项今日到期'">
+  <AppCard title="任务" :subtitle="todayTasks.length + ' 项今日任务'">
     <template #actions>
       <el-button text size="small" @click="router.push('/tasks')">查看全部</el-button>
     </template>
 
     <div class="task-stats">
       <div class="stat">
-        <span class="stat-value">{{ todayTasks.length }}</span>
-        <span class="stat-label">今日到期</span>
+        <span class="stat-value">{{ todayTasks.length - doneCount }}</span>
+        <span class="stat-label">待完成</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value" style="color: var(--color-success)">{{ doneCount }}</span>
+        <span class="stat-label">已完成</span>
       </div>
       <div class="stat">
         <span class="stat-value overdue">{{ overdueCount }}</span>
