@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 
-const SPRITE_BASE = '/webmeji/shimeji/'
-
 interface AnimConfig {
   frames: string[]
   interval: number
@@ -41,98 +39,138 @@ interface SpriteConfig {
   [key: string]: any
 }
 
-function f(name: string) { return SPRITE_BASE + name }
+function f(base: string, name: string) { return base + name }
 
-const SPRITE_CONFIG: SpriteConfig = {
-  ALLOWANCES: ['pet', 'drag', 'bottom', 'top', 'left', 'right'],
-  walkspeed: 50,
-  fallspeed: 200,
-  jumpspeed: 150,
-  gettingupspeed: 2000,
+function createSpriteConfig(base: string, overrides?: {
+  fallspeed?: number; jumpspeed?: number; gettingupspeed?: number
+  standInterval?: number; danceLoops?: number; tripFrames?: string[]
+  petInterval?: number; dragFrames?: string[]
+  fallingFrames?: string[]; fallenFrames?: string[]
+  originalActions?: string[]; edgeActions?: string[]
+  jumpChance?: number; climbTopLoops?: number
+}): SpriteConfig {
+  const o = overrides || {}
+  return {
+    ALLOWANCES: ['pet', 'drag', 'bottom', 'top', 'left', 'right'],
+    walkspeed: 50,
+    fallspeed: o.fallspeed ?? 200,
+    jumpspeed: o.jumpspeed ?? 150,
+    gettingupspeed: o.gettingupspeed ?? 2000,
 
-  walk: {
-    frames: [f('shime1.png'), f('shime2.png'), f('shime3.png'), f('shime2.png')],
-    interval: 175, loops: 6,
-  },
-  stand: {
-    frames: [f('shime1.png')],
-    interval: 200, loops: 1,
-  },
-  sit: {
-    frames: [f('shime11.png')],
-    interval: 1000, loops: 1,
-    randomizeDuration: true, min: 3000, max: 11000,
-  },
-  spin: {
-    frames: [f('shime1.png')],
-    interval: 150, loops: 3,
-  },
-  dance: {
-    frames: [f('shime5.png'), f('shime6.png'), f('shime1.png')],
-    interval: 200, loops: 5,
-  },
-  trip: {
-    frames: [f('shime20.png'), f('shime21.png'), f('shime21.png'), f('shime20.png'), f('shime21.png'), f('shime21.png')],
-    interval: 250, loops: 1,
-  },
-  forcewalk: { loops: 6 },
-  forcethink: {
-    frames: [f('shime27.png'), f('shime28.png')],
-    interval: 500, loops: 2,
-  },
-  pet: {
-    frames: [f('shime15.png'), f('shime16.png'), f('shime17.png')],
-    interval: 75,
-  },
-  drag: {
-    frames: [f('shime5.png'), f('shime7.png'), f('shime5.png'), f('shime6.png'), f('shime8.png'), f('shime6.png')],
-    interval: 210,
-  },
-  falling: {
-    frames: [f('shime4.png')],
-    interval: 200, loops: 2,
-  },
-  fallen: {
-    frames: [f('shime19.png'), f('shime18.png')],
-    interval: 250, loops: 1,
-  },
-  ORIGINAL_ACTIONS: [
-    'walk','walk','walk','walk','walk','walk',
+    walk: {
+      frames: [f(base, 'shime1.png'), f(base, 'shime2.png'), f(base, 'shime3.png'), f(base, 'shime2.png')],
+      interval: 175, loops: 6,
+    },
+    stand: {
+      frames: [f(base, 'shime1.png')],
+      interval: o.standInterval ?? 200, loops: 1,
+    },
+    sit: {
+      frames: [f(base, 'shime11.png')],
+      interval: 1000, loops: 1,
+      randomizeDuration: true, min: 3000, max: 11000,
+    },
+    spin: {
+      frames: [f(base, 'shime1.png')],
+      interval: 150, loops: 3,
+    },
+    dance: {
+      frames: [f(base, 'shime5.png'), f(base, 'shime6.png'), f(base, 'shime1.png')],
+      interval: 200, loops: o.danceLoops ?? 5,
+    },
+    trip: {
+      frames: o.tripFrames ?? [f(base, 'shime20.png'), f(base, 'shime21.png'), f(base, 'shime21.png'), f(base, 'shime20.png'), f(base, 'shime21.png'), f(base, 'shime21.png')],
+      interval: 250, loops: 1,
+    },
+    forcewalk: { loops: 6 },
+    forcethink: {
+      frames: [f(base, 'shime27.png'), f(base, 'shime28.png')],
+      interval: 500, loops: 2,
+    },
+    pet: {
+      frames: [f(base, 'shime15.png'), f(base, 'shime16.png'), f(base, 'shime17.png')],
+      interval: o.petInterval ?? 75,
+    },
+    drag: {
+      frames: o.dragFrames ?? [f(base, 'shime5.png'), f(base, 'shime7.png'), f(base, 'shime5.png'), f(base, 'shime6.png'), f(base, 'shime8.png'), f(base, 'shime6.png')],
+      interval: 210,
+    },
+    falling: {
+      frames: o.fallingFrames ?? [f(base, 'shime4.png')],
+      interval: 200, loops: 2,
+    },
+    fallen: {
+      frames: o.fallenFrames ?? [f(base, 'shime19.png'), f(base, 'shime18.png')],
+      interval: 250, loops: 1,
+    },
+    ORIGINAL_ACTIONS: o.originalActions ?? [
+      'walk','walk','walk','walk','walk','walk',
+      'walk','walk','walk','walk','walk','walk',
+      'spin','spin','spin',
+      'sit','sit',
+      'dance','dance',
+      'trip',
+    ],
+    EDGE_ACTIONS: o.edgeActions ?? [
+      'hang','hang',
+      'climb','climb','climb','climb',
+      'fall','fall',
+    ],
+    JUMP_CHANCE: o.jumpChance ?? 0.05,
+    climbSide: {
+      frames: [f(base, 'shime13.png'), f(base, 'shime14.png')],
+      interval: 200, loops: 2,
+    },
+    hangstillSide: {
+      frames: [f(base, 'shime12.png')],
+      interval: 200, loops: 2,
+      randomizeDuration: true, min: 3000, max: 11000,
+    },
+    climbTop: {
+      frames: [f(base, 'shime24.png'), f(base, 'shime25.png')],
+      interval: 200, loops: o.climbTopLoops ?? 6,
+    },
+    hangstillTop: {
+      frames: [f(base, 'shime23.png')],
+      interval: 200, loops: 2,
+      randomizeDuration: true, min: 3000, max: 11000,
+    },
+    jump: {
+      frames: [f(base, 'shime22.png')],
+      interval: 200,
+    },
+  }
+}
+
+const SHIMEJI_CONFIG = createSpriteConfig('/webmeji/shimeji/')
+const MIKU_CONFIG = createSpriteConfig('/webmeji/miku/', {
+  fallspeed: 150,
+  jumpspeed: 200,
+  gettingupspeed: 3500,
+  standInterval: 1000,
+  danceLoops: 2,
+  tripFrames: undefined, // use default
+  petInterval: 400,
+  dragFrames: undefined, // use default
+  fallingFrames: undefined, // use default
+  fallenFrames: undefined, // use default
+  originalActions: [
     'walk','walk','walk','walk','walk','walk',
     'spin','spin','spin',
     'sit','sit',
-    'dance','dance',
+    'dance','dance','dance','dance','dance',
     'trip',
   ],
-  EDGE_ACTIONS: [
+  edgeActions: [
     'hang','hang',
-    'climb','climb','climb','climb',
-    'fall','fall',
+    'climb','climb','climb','climb','climb',
+    'fall',
   ],
-  JUMP_CHANCE: 0.05,
-  climbSide: {
-    frames: [f('shime13.png'), f('shime14.png')],
-    interval: 200, loops: 2,
-  },
-  hangstillSide: {
-    frames: [f('shime12.png')],
-    interval: 200, loops: 2,
-    randomizeDuration: true, min: 3000, max: 11000,
-  },
-  climbTop: {
-    frames: [f('shime24.png'), f('shime25.png')],
-    interval: 200, loops: 6,
-  },
-  hangstillTop: {
-    frames: [f('shime23.png')],
-    interval: 200, loops: 2,
-    randomizeDuration: true, min: 3000, max: 11000,
-  },
-  jump: {
-    frames: [f('shime22.png')],
-    interval: 200,
-  },
-}
+  jumpChance: 0.1,
+  climbTopLoops: 8,
+})
+
+const ALL_CONFIGS = [SHIMEJI_CONFIG, MIKU_CONFIG]
 
 // ─── Creature class ────────────────────────────────────────────
 class Creature {
@@ -742,7 +780,9 @@ const creatureRefs = ref<HTMLDivElement[]>([])
 const creatures: Creature[] = []
 
 onMounted(() => {
-  const allFrames = Object.values(SPRITE_CONFIG)
+  // Preload all frames from all config sets
+  const allFrames = ALL_CONFIGS
+    .flatMap(cfg => Object.values(cfg))
     .flatMap((item: any) => (item.frames && Array.isArray(item.frames)) ? item.frames : [])
   Promise.all(allFrames.map(src => new Promise<void>((resolve) => {
     const img = new Image()
@@ -755,18 +795,9 @@ onMounted(() => {
     for (let i = 0; i < PET_COUNT; i++) {
       const el = els[i]
       if (!el) continue
-      // Give each creature slightly different movement speeds
-      const variant: SpriteConfig = { ...SPRITE_CONFIG }
-      if (i === 1) {
-        variant.walkspeed = 65
-        variant.fallspeed = 150
-        variant.jumpspeed = 200
-      } else if (i === 2) {
-        variant.walkspeed = 40
-        variant.fallspeed = 250
-        variant.jumpspeed = 120
-      }
-      creatures.push(new Creature(variant, el))
+      // Creature 0 uses shimeji, creatures 1&2 use miku
+      const config = i === 0 ? SHIMEJI_CONFIG : MIKU_CONFIG
+      creatures.push(new Creature(config, el))
     }
   })
 })
