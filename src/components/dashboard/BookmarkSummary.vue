@@ -9,29 +9,22 @@ const router = useRouter()
 onMounted(() => { bookmarkStore.load() })
 
 const recentBookmarks = computed(() => bookmarkStore.bookmarks.slice(0, 5))
+const newTitle = ref('')
 const newUrl = ref('')
 const adding = ref(false)
 
 function getDomain(url: string) { try { return new URL(url).hostname } catch { return url } }
-function getTitleFromUrl(url: string) {
-  try {
-    const u = new URL(url)
-    return u.hostname.replace('www.', '')
-  } catch { return url }
-}
 function openBookmark(bm: { url: string }) { window.open(bm.url, '_blank') }
 
 async function addQuickBookmark() {
+  const title = newTitle.value.trim()
   let url = newUrl.value.trim()
-  if (!url || adding.value) return
+  if (!title || !url || adding.value) return
   if (!/^https?:\/\//i.test(url)) url = 'https://' + url
   adding.value = true
   try {
-    await bookmarkStore.add({
-      title: getTitleFromUrl(url),
-      url,
-      tags: [],
-    })
+    await bookmarkStore.add({ title, url, tags: [] })
+    newTitle.value = ''
     newUrl.value = ''
   } finally {
     adding.value = false
@@ -72,14 +65,22 @@ async function deleteBookmark(id: string) {
 
     <div class="quick-add">
       <el-input
+        v-model="newTitle"
+        placeholder="名称"
+        size="small"
+        class="quick-add-title"
+        @keyup.enter="addQuickBookmark"
+        :disabled="adding"
+      />
+      <el-input
         v-model="newUrl"
-        placeholder="输入网址快速添加书签..."
+        placeholder="网址"
         size="small"
         @keyup.enter="addQuickBookmark"
         :disabled="adding"
       >
         <template #append>
-          <el-button :disabled="!newUrl.trim() || adding" @click="addQuickBookmark">
+          <el-button :disabled="!newTitle.trim() || !newUrl.trim() || adding" @click="addQuickBookmark">
             <el-icon :size="14"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></el-icon>
           </el-button>
         </template>
@@ -97,6 +98,7 @@ async function deleteBookmark(id: string) {
 .bookmark-domain { color: var(--text-muted); font-size: 12px; flex-shrink: 0; margin-left: 8px; }
 .bookmark-action-btn { opacity: 0; transition: opacity 0.15s ease; flex-shrink: 0; padding: 2px !important; margin-left: 4px; }
 .bookmark-item:hover .bookmark-action-btn { opacity: 1; }
-.quick-add { margin-top: 8px; }
+.quick-add { margin-top: 8px; display: flex; gap: 6px; align-items: center; }
+.quick-add-title { width: 100px; flex-shrink: 0; }
 .empty-hint { font-size: 13px; color: var(--text-muted); padding: 8px 0; }
 </style>
