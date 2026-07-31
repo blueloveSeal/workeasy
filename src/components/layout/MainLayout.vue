@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import {
   HomeFilled,
   Grid,
@@ -7,11 +6,7 @@ import {
   Notebook,
   Star,
   Setting,
-  Expand,
-  Fold,
 } from '@element-plus/icons-vue'
-
-const isCollapsed = ref(false)
 
 const menuItems = [
   { index: '/', title: '首页', icon: HomeFilled },
@@ -25,127 +20,198 @@ const menuItems = [
 
 <template>
   <div class="main-layout">
-    <el-aside :width="isCollapsed ? '64px' : '220px'" class="sidebar">
-      <div class="sidebar-header">
-        <span v-show="!isCollapsed" class="logo-text">WorkEasy</span>
-        <span v-show="isCollapsed" class="logo-icon">W</span>
+    <header class="workspace-nav">
+      <div class="nav-inner">
+        <div class="brand">
+          <span class="logo-icon">W</span>
+          <div class="brand-copy">
+            <span class="logo-text">WorkEasy</span>
+            <span class="logo-caption">本地工作台</span>
+          </div>
+        </div>
+        <nav class="nav-scroll" aria-label="主要导航">
+          <el-menu
+            :default-active="$route.path"
+            mode="horizontal"
+            router
+            class="workspace-menu"
+          >
+            <el-menu-item
+              v-for="item in menuItems"
+              :key="item.index"
+              :index="item.index"
+            >
+              <el-icon><component :is="item.icon" /></el-icon>
+              <template #title>{{ item.title }}</template>
+            </el-menu-item>
+          </el-menu>
+        </nav>
       </div>
-      <el-menu
-        :default-active="$route.path"
-        :collapse="isCollapsed"
-        :collapse-transition="false"
-        router
-        class="sidebar-menu"
-      >
-        <el-menu-item
-          v-for="item in menuItems"
-          :key="item.index"
-          :index="item.index"
-        >
-          <el-icon><component :is="item.icon" /></el-icon>
-          <template #title>{{ item.title }}</template>
-        </el-menu-item>
-      </el-menu>
-      <div class="sidebar-toggle" @click="isCollapsed = !isCollapsed">
-        <el-icon :size="16">
-          <component :is="isCollapsed ? Expand : Fold" />
-        </el-icon>
-      </div>
-    </el-aside>
+    </header>
 
-    <div class="main-container">
+    <main class="main-container">
       <router-view v-slot="{ Component }">
         <transition name="fade-slide" mode="out-in">
           <component :is="Component" />
         </transition>
       </router-view>
-    </div>
+    </main>
   </div>
 </template>
 
 <style scoped>
 .main-layout {
   display: flex;
-  height: 100vh;
+  flex-direction: column;
+  height: 100dvh;
   position: relative;
   z-index: 1;
-}
-
-.sidebar {
-  background: var(--sidebar-bg);
-  backdrop-filter: blur(16px) saturate(1.2);
-  -webkit-backdrop-filter: blur(16px) saturate(1.2);
-  border-right: 1px solid var(--border-color);
-  display: flex;
-  flex-direction: column;
   overflow: hidden;
 }
 
-.sidebar-header {
-  height: 64px;
+.workspace-nav {
+  flex: 0 0 auto;
+  background: var(--sidebar-bg);
+  backdrop-filter: blur(20px) saturate(1.1);
+  -webkit-backdrop-filter: blur(20px) saturate(1.1);
+  border-bottom: 1px solid var(--border-color);
+  z-index: 20;
+}
+
+.nav-inner {
+  width: min(100% - 40px, 1380px);
+  height: 72px;
+  margin: 0 auto;
   display: flex;
   align-items: center;
-  justify-content: center;
-  border-bottom: 1px solid var(--border-color);
+  gap: 34px;
+  overflow: hidden;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  flex: 0 0 auto;
+}
+
+.brand-copy {
+  display: flex;
+  flex-direction: column;
 }
 
 .logo-text {
-  font-size: 20px;
-  font-weight: 700;
-  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--text-primary);
+  font-size: 18px;
+  font-weight: 750;
+  letter-spacing: -0.04em;
 }
 
 .logo-icon {
-  font-size: 24px;
-  font-weight: 700;
-  color: var(--color-primary);
-}
-
-.sidebar-menu {
-  flex: 1;
-  border-right: none;
-  background: transparent;
-  padding: 8px;
-}
-
-.sidebar-menu .el-menu-item {
-  border-radius: 8px;
-  margin-bottom: 4px;
-  color: var(--text-secondary);
-  transition: all 0.2s ease;
-}
-
-.sidebar-menu .el-menu-item:hover {
-  background: var(--bg-input);
-  color: var(--color-primary);
-}
-
-.sidebar-menu .el-menu-item.is-active {
+  width: 34px;
+  height: 34px;
+  border-radius: 11px 11px 11px 4px;
+  display: grid;
+  place-items: center;
+  color: #fff8f3;
   background: var(--color-primary);
-  color: #fff;
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--color-primary) 24%, transparent);
+  font-size: 16px;
+  font-weight: 800;
 }
 
-.sidebar-toggle {
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
+.logo-caption {
   color: var(--text-muted);
-  border-top: 1px solid var(--border-color);
-  transition: color 0.2s ease;
+  font-size: 10px;
+  letter-spacing: 0.12em;
 }
 
-.sidebar-toggle:hover {
+.nav-scroll {
+  flex: 1;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.nav-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.workspace-menu {
+  width: max-content;
+  min-width: 100%;
+  height: 72px;
+  border-bottom: 0;
+  background: transparent;
+  gap: 4px;
+}
+
+.workspace-menu .el-menu-item {
+  height: 72px;
+  border-bottom: 0 !important;
+  padding: 0 16px;
+  color: var(--text-secondary);
+  transition: color 220ms ease, background-color 220ms ease;
+}
+
+.workspace-menu .el-menu-item::after {
+  content: '';
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 0;
+  height: 3px;
+  border-radius: 3px 3px 0 0;
+  background: var(--color-primary);
+  transform: scaleX(0);
+  transition: transform 220ms ease;
+}
+
+.workspace-menu .el-menu-item:hover {
+  color: var(--text-primary);
+  background: color-mix(in srgb, var(--color-primary) 6%, transparent);
+}
+
+.workspace-menu .el-menu-item.is-active {
   color: var(--color-primary);
+  background: transparent;
+  font-weight: 650;
+}
+
+.workspace-menu .el-menu-item.is-active::after {
+  transform: scaleX(1);
 }
 
 .main-container {
   flex: 1;
+  min-height: 0;
   overflow: hidden;
   background: transparent;
+}
+
+@media (max-width: 760px) {
+  .nav-inner {
+    width: calc(100% - 24px);
+    height: 64px;
+    gap: 12px;
+  }
+
+  .brand-copy {
+    display: none;
+  }
+
+  .workspace-menu {
+    height: 64px;
+    justify-content: flex-end;
+  }
+
+  .workspace-menu .el-menu-item {
+    height: 64px;
+    padding: 0 11px;
+  }
+
+  .workspace-menu .el-menu-item span {
+    display: none;
+  }
 }
 </style>

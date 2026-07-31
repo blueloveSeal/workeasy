@@ -37,13 +37,42 @@ import SearchDialog from '@/components/common/SearchDialog.vue'
 
 .dashboard-content {
   flex: 1;
-  padding: 24px;
+  width: min(100% - 48px, 1320px);
+  padding: 30px 0 48px;
+  margin: 0 auto;
   overflow-y: auto;
 }
 
 .summary-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
+  grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
+  gap: 18px;
+  align-items: stretch;
+}
+
+.summary-grid .stagger-item:first-child {
+  grid-row: span 2;
+}
+
+@media (max-width: 900px) {
+  .dashboard-content {
+    width: min(100% - 32px, 720px);
+    padding-top: 24px;
+  }
+
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .summary-grid .stagger-item:first-child {
+    grid-row: auto;
+  }
+}
+
+@media (max-width: 560px) {
+  .dashboard-content {
+    width: calc(100% - 24px);
+    padding: 20px 0 32px;
+  }
 }
 </style>

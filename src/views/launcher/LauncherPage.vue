@@ -241,7 +241,9 @@ onMounted(() => {
 
 .launcher-content {
   flex: 1;
-  padding: 24px;
+  width: min(100% - 48px, 1320px);
+  padding: 30px 0 48px;
+  margin: 0 auto;
   overflow-y: auto;
 }
 
@@ -253,8 +255,10 @@ onMounted(() => {
 }
 
 .page-title {
-  font-size: 28px;
-  font-weight: 700;
+  font-size: clamp(32px, 4vw, 48px);
+  line-height: 1;
+  font-weight: 750;
+  letter-spacing: -0.055em;
   color: var(--text-primary);
   margin: 0;
 }
@@ -270,16 +274,16 @@ onMounted(() => {
 
 .launcher-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 14px;
 }
 
 .launcher-item {
   position: relative;
   background: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-radius: 12px;
-  padding: 20px 16px;
+  border-radius: 18px 18px 18px 7px;
+  padding: 24px 18px;
   text-align: center;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -287,9 +291,9 @@ onMounted(() => {
 }
 
 .launcher-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border-color: var(--color-primary);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-card-hover);
+  border-color: color-mix(in srgb, var(--color-primary) 32%, var(--border-color));
 }
 
 .launcher-item.edit-mode {
@@ -310,7 +314,7 @@ onMounted(() => {
   width: 56px;
   height: 56px;
   margin: 0 auto 12px;
-  border-radius: 12px;
+  border-radius: 16px 16px 16px 6px;
   background: var(--bg-input);
   display: flex;
   align-items: center;
@@ -383,7 +387,7 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   font-size: 20px;
-  border-radius: 8px;
+  border-radius: 10px 10px 10px 4px;
   cursor: pointer;
   border: 2px solid transparent;
   transition: all 0.2s ease;
@@ -396,6 +400,27 @@ onMounted(() => {
 
 .emoji-option.selected {
   border-color: var(--color-primary);
-  background: var(--color-primary-light);
+  background: color-mix(in srgb, var(--color-primary) 14%, transparent);
+}
+
+@media (max-width: 760px) {
+  .launcher-content {
+    width: calc(100% - 24px);
+    padding: 24px 0 32px;
+  }
+
+  .launcher-header {
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .header-actions {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .launcher-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  }
 }
 </style>

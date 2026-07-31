@@ -596,19 +596,22 @@ const handleBatchStatusChange = (status: string) => {
 
 <style scoped>
 .task-page {
-  min-height: 100vh;
-  background: var(--bg-primary);
+  height: 100%;
+  background: transparent;
   display: flex;
   flex-direction: column;
 }
 
 .task-content {
   flex: 1;
-  padding: 24px 32px;
-  background: var(--bg-card);
-  margin: 16px 24px 24px;
-  border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  width: min(100% - 48px, 1320px);
+  padding: 30px 32px 38px;
+  background: color-mix(in srgb, var(--bg-card) 94%, transparent);
+  margin: 24px auto 32px;
+  border: 1px solid var(--border-color);
+  border-radius: 24px 24px 24px 9px;
+  box-shadow: var(--shadow-card);
+  overflow: auto;
 }
 
 /* Header */
@@ -620,8 +623,10 @@ const handleBatchStatusChange = (status: string) => {
 }
 
 .page-title {
-  font-size: 22px;
-  font-weight: 600;
+  font-size: clamp(28px, 3vw, 40px);
+  line-height: 1;
+  font-weight: 750;
+  letter-spacing: -0.055em;
   color: var(--text-primary);
   margin: 0;
 }
@@ -640,7 +645,8 @@ const handleBatchStatusChange = (status: string) => {
   padding: 10px 16px;
   margin-bottom: 16px;
   background: var(--bg-secondary);
-  border-radius: 8px;
+  border-radius: 12px;
+  border-left: 3px solid var(--color-primary);
 }
 
 .batch-info {
@@ -691,16 +697,18 @@ const handleBatchStatusChange = (status: string) => {
 /* Kanban */
 .kanban-board {
   display: flex;
-  gap: 20px;
+  gap: 16px;
   min-height: 500px;
+  overflow-x: auto;
+  padding-bottom: 6px;
 }
 
 .kanban-column {
   flex: 1;
   min-width: 260px;
   background: var(--bg-secondary);
-  border-radius: 10px;
-  border-top: 3px solid #909399;
+  border-radius: 16px 16px 16px 6px;
+  border-top: 2px solid var(--text-muted);
   display: flex;
   flex-direction: column;
 }
@@ -726,17 +734,18 @@ const handleBatchStatusChange = (status: string) => {
 
 .kanban-card {
   background: var(--bg-card);
-  border-radius: 8px;
+  border: 1px solid var(--border-light);
+  border-radius: 12px 12px 12px 5px;
   padding: 14px;
   margin-bottom: 10px;
   cursor: grab;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  box-shadow: none;
   transition: box-shadow 0.2s, transform 0.15s;
 }
 
 .kanban-card:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-  transform: translateY(-1px);
+  box-shadow: var(--shadow-card);
+  transform: translateY(-2px);
 }
 
 .kanban-card:active {
@@ -786,5 +795,33 @@ const handleBatchStatusChange = (status: string) => {
   flex-wrap: wrap;
   align-items: center;
   gap: 4px;
+}
+
+@media (max-width: 760px) {
+  .task-content {
+    width: calc(100% - 24px);
+    margin: 16px auto 24px;
+    padding: 22px 16px 28px;
+    border-radius: 18px 18px 18px 7px;
+  }
+
+  .task-header {
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .page-title {
+    font-size: 34px;
+    white-space: nowrap;
+  }
+
+  .header-actions {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .kanban-column {
+    flex: 0 0 82vw;
+  }
 }
 </style>

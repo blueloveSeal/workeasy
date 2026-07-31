@@ -381,16 +381,18 @@ async function handleClearAll() {
 
 .settings-content {
   flex: 1;
-  padding: 24px;
+  padding: 30px 0 48px;
   overflow-y: auto;
-  max-width: 800px;
+  max-width: 960px;
   margin: 0 auto;
-  width: 100%;
+  width: min(100% - 48px, 960px);
 }
 
 .page-title {
-  font-size: 28px;
-  font-weight: 700;
+  font-size: clamp(32px, 4vw, 48px);
+  line-height: 1;
+  font-weight: 750;
+  letter-spacing: -0.055em;
   color: var(--text-primary);
   margin: 0 0 32px 0;
 }
@@ -402,15 +404,16 @@ async function handleClearAll() {
 }
 
 .settings-section {
-  background: var(--bg-card);
+  background: color-mix(in srgb, var(--bg-card) 94%, transparent);
   border: 1px solid var(--border-color);
-  border-radius: 12px;
+  border-radius: 20px 20px 20px 8px;
   overflow: hidden;
+  box-shadow: var(--shadow-card);
 }
 
 .section-title {
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 18px;
+  font-weight: 700;
   color: var(--text-primary);
   margin: 0;
   padding: 16px 20px;
@@ -454,7 +457,7 @@ async function handleClearAll() {
 .theme-preview {
   width: 120px;
   height: 80px;
-  border-radius: 8px;
+  border-radius: 12px 12px 12px 5px;
   overflow: hidden;
   border: 1px solid var(--border-color);
 }
@@ -501,7 +504,7 @@ async function handleClearAll() {
 .background-preview {
   width: 160px;
   height: 100px;
-  border-radius: 8px;
+  border-radius: 12px 12px 12px 5px;
   overflow: hidden;
   border: 1px solid var(--border-color);
 }
@@ -549,5 +552,25 @@ async function handleClearAll() {
 
 :deep(.el-upload-dragger:hover) {
   border-color: var(--color-primary);
+}
+
+@media (max-width: 760px) {
+  .settings-content {
+    width: calc(100% - 24px);
+    padding: 24px 0 32px;
+  }
+
+  .setting-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .setting-row > :not(.setting-info) {
+    max-width: 100%;
+  }
+
+  .settings-section {
+    border-radius: 16px 16px 16px 6px;
+  }
 }
 </style>

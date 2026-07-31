@@ -250,25 +250,31 @@ watch(
 
 <style scoped>
 .note-page {
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  background-color: var(--el-bg-color);
+  background: transparent;
 }
 
 .note-container {
   flex: 1;
   display: flex;
+  width: min(100% - 48px, 1320px);
+  margin: 24px auto 32px;
   overflow: hidden;
+  background: color-mix(in srgb, var(--bg-card) 94%, transparent);
+  border: 1px solid var(--border-color);
+  border-radius: 24px 24px 24px 9px;
+  box-shadow: var(--shadow-card);
 }
 
 /* Left Sidebar */
 .note-sidebar {
-  width: 280px;
-  border-right: 1px solid var(--el-border-color);
+  width: 310px;
+  border-right: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
-  background-color: var(--el-fill-color-lighter);
+  background: color-mix(in srgb, var(--bg-secondary) 58%, transparent);
 }
 
 .sidebar-header {
@@ -296,7 +302,7 @@ watch(
 .note-item {
   padding: 12px;
   margin-bottom: 4px;
-  border-radius: 6px;
+  border-radius: 11px 11px 11px 4px;
   cursor: pointer;
   display: flex;
   justify-content: space-between;
@@ -305,12 +311,12 @@ watch(
 }
 
 .note-item:hover {
-  background-color: var(--el-fill-color);
+  background: var(--bg-card);
 }
 
 .note-item.active {
-  background-color: var(--el-color-primary-light-9);
-  border-left: 3px solid var(--el-color-primary);
+  background: color-mix(in srgb, var(--color-primary) 10%, var(--bg-card));
+  border-left: 3px solid var(--color-primary);
 }
 
 .note-item-content {
@@ -379,8 +385,8 @@ watch(
 }
 
 .editor-header {
-  padding: 16px 24px;
-  border-bottom: 1px solid var(--el-border-color);
+  padding: 22px 28px;
+  border-bottom: 1px solid var(--border-color);
   display: flex;
   align-items: center;
   gap: 16px;
@@ -391,8 +397,9 @@ watch(
 }
 
 .title-input :deep(.el-input__inner) {
-  font-size: 24px;
-  font-weight: 600;
+  font-size: clamp(24px, 3vw, 34px);
+  font-weight: 750;
+  letter-spacing: -0.045em;
   border: none;
   padding: 0;
 }
@@ -412,5 +419,27 @@ watch(
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+@media (max-width: 760px) {
+  .note-container {
+    width: calc(100% - 24px);
+    margin: 16px auto 24px;
+    flex-direction: column;
+    border-radius: 18px 18px 18px 7px;
+  }
+
+  .note-sidebar {
+    width: 100%;
+    height: 230px;
+    flex: 0 0 auto;
+    border-right: 0;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .editor-header {
+    padding: 16px;
+    flex-wrap: wrap;
+  }
 }
 </style>

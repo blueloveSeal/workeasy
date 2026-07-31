@@ -69,28 +69,32 @@ function launchApp(item: { protocolUrl: string }) {
 
 <style scoped>
 .launcher-section {
-  margin-bottom: 8px;
+  margin-bottom: 30px;
 }
 
 .launcher-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 
 .section-title {
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 13px;
+  font-weight: 650;
+  letter-spacing: 0.08em;
   color: var(--text-primary);
   margin: 0;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.08);
 }
 
 .launcher-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
+  gap: 10px;
+  padding: 8px;
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--bg-card) 44%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border-color) 62%, transparent);
 }
 
 .launcher-icon {
@@ -99,30 +103,30 @@ function launchApp(item: { protocolUrl: string }) {
   align-items: center;
   gap: 8px;
   cursor: pointer;
-  padding: 12px 8px;
-  border-radius: 12px;
-  transition: all 0.2s ease;
+  padding: 13px 8px 11px;
+  border-radius: 13px;
+  transition: transform 220ms ease, background-color 220ms ease;
 }
 
 .launcher-icon:hover {
-  background: var(--bg-input);
-  transform: scale(1.05);
+  background: var(--bg-card);
+  transform: translateY(-2px);
 }
 
 .launcher-icon:hover .icon-wrapper {
-  box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+  box-shadow: 0 10px 22px color-mix(in srgb, var(--color-primary) 18%, transparent);
 }
 
 .icon-wrapper {
-  width: 52px;
-  height: 52px;
-  border-radius: 12px;
+  width: 50px;
+  height: 50px;
+  border-radius: 15px 15px 15px 6px;
   background: var(--bg-card);
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: var(--shadow-card);
-  transition: all 0.2s ease;
+  transition: box-shadow 220ms ease, transform 220ms ease;
 }
 
 .icon-image {
@@ -143,7 +147,6 @@ function launchApp(item: { protocolUrl: string }) {
   text-overflow: ellipsis;
   white-space: nowrap;
   max-width: 72px;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .add-icon .icon-wrapper {

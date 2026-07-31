@@ -266,7 +266,9 @@ onMounted(() => {
 
 .bookmark-content {
   flex: 1;
-  padding: 24px;
+  width: min(100% - 48px, 1320px);
+  padding: 30px 0 48px;
+  margin: 0 auto;
   overflow-y: auto;
 }
 
@@ -283,8 +285,10 @@ onMounted(() => {
 }
 
 .page-title {
-  font-size: 28px;
-  font-weight: 700;
+  font-size: clamp(32px, 4vw, 48px);
+  line-height: 1;
+  font-weight: 750;
+  letter-spacing: -0.055em;
   color: var(--text-primary);
   margin: 0 0 16px 0;
 }
@@ -302,23 +306,23 @@ onMounted(() => {
 .bookmark-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 16px;
+  gap: 14px;
 }
 
 .bookmark-card {
   position: relative;
   background: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-radius: 12px;
-  padding: 16px;
+  border-radius: 18px 18px 18px 7px;
+  padding: 18px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .bookmark-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border-color: var(--color-primary);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-card-hover);
+  border-color: color-mix(in srgb, var(--color-primary) 32%, var(--border-color));
 }
 
 .bookmark-card:hover .card-actions {
@@ -335,7 +339,7 @@ onMounted(() => {
   flex-shrink: 0;
   width: 40px;
   height: 40px;
-  border-radius: 8px;
+  border-radius: 12px 12px 12px 5px;
   overflow: hidden;
   background: var(--bg-input);
   display: flex;
@@ -383,7 +387,7 @@ onMounted(() => {
 .bookmark-category {
   padding: 2px 8px;
   border-radius: 4px;
-  background: var(--color-primary-light);
+  background: color-mix(in srgb, var(--color-primary) 12%, transparent);
   color: var(--color-primary);
 }
 
@@ -407,5 +411,25 @@ onMounted(() => {
 
 :deep(.el-tabs__header) {
   margin-bottom: 0;
+}
+
+@media (max-width: 760px) {
+  .bookmark-content {
+    width: calc(100% - 24px);
+    padding: 24px 0 32px;
+  }
+
+  .bookmark-header {
+    flex-direction: column;
+  }
+
+  .header-right {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .bookmark-grid {
+    grid-template-columns: 1fr;
+  }
 }
 </style>

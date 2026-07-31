@@ -2,6 +2,27 @@
 @use './themes/dark.scss';
 @use './variables.scss' as *;
 
+:root[data-theme] {
+  --el-color-primary: var(--color-primary);
+  --el-color-primary-light-3: var(--color-primary-light);
+  --el-color-primary-light-5: color-mix(in srgb, var(--color-primary) 52%, var(--bg-card));
+  --el-color-primary-light-7: color-mix(in srgb, var(--color-primary) 30%, var(--bg-card));
+  --el-color-primary-light-8: color-mix(in srgb, var(--color-primary) 20%, var(--bg-card));
+  --el-color-primary-light-9: color-mix(in srgb, var(--color-primary) 10%, var(--bg-card));
+  --el-color-primary-dark-2: var(--color-primary-dark);
+  --el-bg-color: var(--bg-card);
+  --el-bg-color-page: var(--bg-primary);
+  --el-fill-color-blank: var(--bg-card);
+  --el-fill-color-light: var(--bg-input);
+  --el-fill-color-lighter: var(--bg-secondary);
+  --el-border-color: var(--border-color);
+  --el-border-color-light: var(--border-light);
+  --el-text-color-primary: var(--text-primary);
+  --el-text-color-regular: var(--text-secondary);
+  --el-text-color-secondary: var(--text-muted);
+  --el-border-radius-base: 10px;
+}
+
 *,
 *::before,
 *::after {
@@ -22,9 +43,30 @@ html, body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow: hidden;
+}
+
 #app {
   width: 100%;
   height: 100%;
+  isolation: isolate;
+}
+
+#app::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 12% 0%, color-mix(in srgb, var(--color-primary) 9%, transparent) 0, transparent 32rem),
+    radial-gradient(circle at 88% 90%, color-mix(in srgb, var(--color-primary) 6%, transparent) 0, transparent 28rem);
+  opacity: 0.9;
 }
 
 a {
@@ -33,6 +75,22 @@ a {
   &:hover {
     color: var(--color-primary-light);
   }
+}
+
+button,
+[role='button'],
+.el-menu-item {
+  -webkit-tap-highlight-color: transparent;
+}
+
+:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--color-primary) 38%, transparent);
+  outline-offset: 3px;
+}
+
+::selection {
+  color: var(--bg-card);
+  background: var(--color-primary);
 }
 
 ::-webkit-scrollbar {
@@ -57,13 +115,44 @@ a {
   border-radius: $card-radius;
   padding: $card-padding;
   box-shadow: var(--shadow-card);
-  transition: $transition-base;
+  transition: transform $transition-base, box-shadow $transition-base, background-color $transition-base;
   &:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-card-hover);
   }
 }
 
+.page-title,
+.section-title,
+.card-title {
+  font-family: $display-font-stack;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.el-button,
+.el-input__wrapper,
+.el-select__wrapper,
+.el-dialog,
+.el-drawer {
+  transition-duration: 220ms;
+}
+
+.el-button {
+  font-weight: 600;
+}
+
 .el-button:active {
-  transform: scale(0.95);
+  transform: scale(0.98);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+  }
 }
