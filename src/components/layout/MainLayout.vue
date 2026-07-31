@@ -7,6 +7,7 @@ import {
   Star,
   Setting,
 } from '@element-plus/icons-vue'
+import WebmejiPet from '@/components/common/WebmejiPet.vue'
 
 const menuItems = [
   { index: '/', title: '首页', icon: HomeFilled },
@@ -56,6 +57,8 @@ const menuItems = [
         </transition>
       </router-view>
     </main>
+
+    <WebmejiPet />
   </div>
 </template>
 
