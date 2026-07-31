@@ -110,7 +110,12 @@ async function handleAddPresets() {
 }
 
 function launchApp(item: LauncherItem) {
-  window.open(item.protocolUrl, '_self')
+  const isWebUrl = /^https?:\/\//i.test(item.protocolUrl)
+  if (isWebUrl) {
+    window.open(item.protocolUrl, '_blank')
+  } else {
+    window.open(item.protocolUrl, '_self')
+  }
 }
 
 async function onDragEnd() {
@@ -148,33 +153,32 @@ onMounted(() => {
       <div v-if="launcherStore.items.length" class="launcher-grid-wrapper">
         <draggable
           v-model="launcherStore.items"
-
           class="launcher-grid"
           ghost-class="ghost"
           @end="onDragEnd"
           :disabled="!editMode"
         >
-          <template #item="{ element: item }">
-            <div
-              class="launcher-item"
-              :class="{ 'edit-mode': editMode }"
-              @click="editMode ? null : launchApp(item)"
-              @dblclick="editMode ? openEditDialog(item) : null"
-              @contextmenu="handleContextMenu(item, $event)"
-            >
-              <div class="item-icon">
-                <span v-if="item.iconType === 'emoji' || !item.iconType">{{ getIconDisplay(item) }}</span>
-                <img v-else-if="item.iconType === 'image'" :src="item.icon" :alt="item.name" />
-                <span v-else>{{ getIconDisplay(item) }}</span>
-              </div>
-              <div class="item-name">{{ item.name }}</div>
-              <div class="item-url">{{ item.protocolUrl }}</div>
-              <div v-if="editMode" class="item-edit-overlay">
-                <el-button size="small" @click.stop="openEditDialog(item)">编辑</el-button>
-                <el-button size="small" type="danger" @click.stop="handleDelete(item)">删除</el-button>
-              </div>
+          <div
+            v-for="item in launcherStore.items"
+            :key="item.id"
+            class="launcher-item"
+            :class="{ 'edit-mode': editMode }"
+            @click="editMode ? null : launchApp(item)"
+            @dblclick="editMode ? openEditDialog(item) : null"
+            @contextmenu="handleContextMenu(item, $event)"
+          >
+            <div class="item-icon">
+              <span v-if="item.iconType === 'emoji' || !item.iconType">{{ getIconDisplay(item) }}</span>
+              <img v-else-if="item.iconType === 'image'" :src="item.icon" :alt="item.name" />
+              <span v-else>{{ getIconDisplay(item) }}</span>
             </div>
-          </template>
+            <div class="item-name">{{ item.name }}</div>
+            <div class="item-url">{{ item.protocolUrl }}</div>
+            <div v-if="editMode" class="item-edit-overlay">
+              <el-button size="small" @click.stop="openEditDialog(item)">编辑</el-button>
+              <el-button size="small" type="danger" @click.stop="handleDelete(item)">删除</el-button>
+            </div>
+          </div>
         </draggable>
       </div>
 

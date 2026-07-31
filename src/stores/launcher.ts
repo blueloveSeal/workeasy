@@ -7,13 +7,19 @@ function genId() {
   return Date.now().toString(36) + Math.random().toString(36).slice(2, 8)
 }
 
-export const PRESET_APPS: Omit<LauncherItem, 'id' | 'order' | 'createdAt'>[] = [
-  { name: 'VS Code', protocolUrl: 'vscode://', icon: '\u{1F4BB}', iconType: 'emoji' },
-  { name: 'Steam', protocolUrl: 'steam://open/steam', icon: '\u{1F3AE}', iconType: 'emoji' },
+/** 保证首次加载时自动添加的保底应用 */
+export const DEFAULT_APPS: Omit<LauncherItem, 'id' | 'order' | 'createdAt'>[] = [
   { name: 'WeChat', protocolUrl: 'weixin://', icon: '\u{1F4AC}', iconType: 'emoji' },
-  { name: 'QQ', protocolUrl: 'tencent://', icon: '\u{1F427}', iconType: 'emoji' },
+]
+
+/** "添加预设" 按钮可添加的全部应用 */
+export const PRESET_APPS: Omit<LauncherItem, 'id' | 'order' | 'createdAt'>[] = [
+  { name: 'WeChat', protocolUrl: 'weixin://', icon: '\u{1F4AC}', iconType: 'emoji' },
   { name: 'Chrome', protocolUrl: 'google-chrome://', icon: '\u{1F310}', iconType: 'emoji' },
-  { name: '文件管理器', protocolUrl: 'file:///', icon: '\u{1F4C1}', iconType: 'emoji' },
+  { name: 'Teams', protocolUrl: 'msteams://', icon: '\u{1F4DE}', iconType: 'emoji' },
+  { name: 'Clash Verge', protocolUrl: 'clash://', icon: '\u{1F6E1}', iconType: 'emoji' },
+  { name: 'ChatGPT', protocolUrl: 'chatgpt://', icon: '\u{1F916}', iconType: 'emoji' },
+  { name: 'Qoder', protocolUrl: 'https://qoder.com', icon: '\u{1F680}', iconType: 'emoji' },
 ]
 
 export const useLauncherStore = defineStore('launcher', () => {
@@ -21,6 +27,12 @@ export const useLauncherStore = defineStore('launcher', () => {
 
   async function load() {
     items.value = await db.launcherItems.orderBy('order').toArray()
+    // 首次使用：自动添加保底应用（WeChat）
+    if (items.value.length === 0) {
+      for (const app of DEFAULT_APPS) {
+        await add(app)
+      }
+    }
   }
 
   async function add(item: Omit<LauncherItem, 'id' | 'order' | 'createdAt'>) {

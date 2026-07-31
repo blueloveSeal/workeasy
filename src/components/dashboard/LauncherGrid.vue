@@ -12,7 +12,12 @@ onMounted(() => {
 })
 
 function launchApp(item: { protocolUrl: string }) {
-  window.location.href = item.protocolUrl
+  const isWebUrl = /^https?:\/\//i.test(item.protocolUrl)
+  if (isWebUrl) {
+    window.open(item.protocolUrl, '_blank')
+  } else {
+    window.location.href = item.protocolUrl
+  }
 }
 </script>
 
