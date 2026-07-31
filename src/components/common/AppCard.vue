@@ -24,7 +24,6 @@ defineProps<{
 
 <style scoped>
 .app-card {
-  height: 100%;
   background: color-mix(in srgb, var(--bg-card) 94%, transparent);
   border: 1px solid color-mix(in srgb, var(--border-color) 72%, transparent);
   border-radius: 20px 20px 20px 8px;
