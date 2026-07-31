@@ -165,6 +165,9 @@ class Creature {
   currentEdge: string
   animationFrameId: number | null
   lastTime: number
+  _rafWorking: boolean
+  _rafTestDone: boolean
+  _fallbackTimer: ReturnType<typeof setTimeout> | null
   resizeHandler: () => void
 
   constructor(spriteConfig: SpriteConfig, mountEl: HTMLDivElement) {
@@ -190,6 +193,9 @@ class Creature {
     this.forceThinkAfter = false
     this.animationFrameId = null
     this.lastTime = 0
+    this._rafWorking = false
+    this._rafTestDone = false
+    this._fallbackTimer = null
 
     this.container = mountEl
     this.img = this.container.querySelector('img')!
@@ -209,7 +215,7 @@ class Creature {
     this.currentAction = this.actionSequence[this.currentActionIndex]
     this.startAction(this.currentAction)
     this.animate = this.animate.bind(this)
-    this.animationFrameId = requestAnimationFrame(this.animate)
+    this.scheduleFrame()
 
     this.resizeHandler = () => {
       const style = window.getComputedStyle(this.container)
@@ -265,7 +271,36 @@ class Creature {
       cancelAnimationFrame(this.animationFrameId)
       this.animationFrameId = null
     }
+    if (this._fallbackTimer) {
+      clearTimeout(this._fallbackTimer)
+      this._fallbackTimer = null
+    }
     window.removeEventListener('resize', this.resizeHandler)
+  }
+
+  scheduleFrame() {
+    if (this._rafWorking) {
+      this.animationFrameId = requestAnimationFrame(this.animate)
+    } else {
+      // Use setTimeout as fallback for background tabs where rAF is throttled
+      this._fallbackTimer = setTimeout(() => {
+        this.animate(performance.now())
+      }, 16) as any
+      // Test if rAF works by scheduling a test; if it fires, switch to rAF
+      if (!this._rafTestDone) {
+        this._rafTestDone = true
+        requestAnimationFrame(() => {
+          this._rafWorking = true
+          // Cancel the setTimeout fallback since rAF works
+          if (this._fallbackTimer) {
+            clearTimeout(this._fallbackTimer)
+            this._fallbackTimer = null
+          }
+          // Switch to rAF for subsequent frames
+          this.animationFrameId = requestAnimationFrame(this.animate)
+        })
+      }
+    }
   }
 
   isSideEdge(edge: string) { return edge === 'left' || edge === 'right' }
@@ -452,7 +487,7 @@ class Creature {
       if (this.dragFrameTimer) { clearInterval(this.dragFrameTimer); this.dragFrameTimer = null }
       this.resetAnimation()
       this.fallToBottom()
-      this.animationFrameId = requestAnimationFrame(this.animate)
+      this.scheduleFrame()
     }
 
     window.addEventListener('mousemove', onPointerMove)
@@ -493,7 +528,7 @@ class Creature {
     const step = (time: number) => {
       if (this.isDragging) {
         clearInterval(this.frameTimer); this.frameTimer = null
-        return this.animationFrameId = requestAnimationFrame(this.animate)
+        return this.scheduleFrame()
       }
       const elapsed = (time - startTime) / 1000
       const deltaY = fallSpeed * elapsed
@@ -539,7 +574,7 @@ class Creature {
     this.lastTime = performance.now()
     this.currentAction = 'sit'
     this.setNextAction()
-    this.animationFrameId = requestAnimationFrame(this.animate)
+    this.scheduleFrame()
   }
 
   setNextAction() {
@@ -613,7 +648,7 @@ class Creature {
 
     if (action === 'climbTop') { this.direction = Math.random() < 0.5 ? -1 : 1; this.updateImageDirection() }
     if (action === 'climbSide') { this.direction = Math.random() < 0.5 ? -1 : 1 }
-    if (this.isJumping) { this.animationFrameId = requestAnimationFrame(this.animate); return }
+    if (this.isJumping) { this.scheduleFrame(); return }
 
     const config = this.spriteConfig[action]
     if (!config) return
@@ -667,7 +702,7 @@ class Creature {
     this.lastTime = time
 
     if (this.isDragging || this.isFalling) {
-      this.animationFrameId = requestAnimationFrame(this.animate)
+      this.scheduleFrame()
       return
     }
 
@@ -697,16 +732,16 @@ class Creature {
       this.applyEdgeOffset()
     }
 
-    this.animationFrameId = requestAnimationFrame(this.animate)
+    this.scheduleFrame()
   }
 }
 
 // ─── Vue component setup ───────────────────────────────────────
-const creatureRef = ref<HTMLDivElement>()
-let creature: Creature | null = null
+const PET_COUNT = 3
+const creatureRefs = ref<HTMLDivElement[]>([])
+const creatures: Creature[] = []
 
 onMounted(() => {
-  if (!creatureRef.value) return
   const allFrames = Object.values(SPRITE_CONFIG)
     .flatMap((item: any) => (item.frames && Array.isArray(item.frames)) ? item.frames : [])
   Promise.all(allFrames.map(src => new Promise<void>((resolve) => {
@@ -715,20 +750,40 @@ onMounted(() => {
     img.onerror = () => resolve()
     img.src = src
   }))).then(() => {
-    if (creatureRef.value) {
-      creature = new Creature(SPRITE_CONFIG, creatureRef.value)
+    // Vue auto-populates creatureRefs when using :ref with v-for
+    const els = creatureRefs.value
+    for (let i = 0; i < PET_COUNT; i++) {
+      const el = els[i]
+      if (!el) continue
+      // Give each creature slightly different movement speeds
+      const variant: SpriteConfig = { ...SPRITE_CONFIG }
+      if (i === 1) {
+        variant.walkspeed = 65
+        variant.fallspeed = 150
+        variant.jumpspeed = 200
+      } else if (i === 2) {
+        variant.walkspeed = 40
+        variant.fallspeed = 250
+        variant.jumpspeed = 120
+      }
+      creatures.push(new Creature(variant, el))
     }
   })
 })
 
 onBeforeUnmount(() => {
-  creature?.clearAllTimers()
-  creature = null
+  creatures.forEach(c => c.clearAllTimers())
+  creatures.length = 0
 })
 </script>
 
 <template>
-  <div ref="creatureRef" class="webmeji-container">
+  <div
+    v-for="i in PET_COUNT"
+    :key="i"
+    ref="creatureRefs"
+    class="webmeji-container"
+  >
     <img alt="pet" />
   </div>
 </template>
