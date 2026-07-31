@@ -15,6 +15,16 @@ export class WorkEasyDB extends Dexie {
 
   constructor() {
     super('WorkEasyDB')
+    // Version 1: Original schema with events table
+    this.version(1).stores({
+      tasks: 'id, status, priority, dueDate, *tags, createdAt',
+      notes: 'id, category, isPinned, *tags, updatedAt',
+      events: 'id, startTime, endTime, createdAt',
+      bookmarks: 'id, category, *tags, createdAt',
+      launcherItems: 'id, order',
+      themeSettings: 'id',
+      customBackgrounds: 'id, type',
+    })
     // Version 2: Removed events table (calendar module deleted)
     this.version(2).stores({
       tasks: 'id, status, priority, dueDate, *tags, createdAt',
