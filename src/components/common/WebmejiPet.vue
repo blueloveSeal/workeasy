@@ -296,8 +296,8 @@ class Creature {
   }
 
   resetAnimation() {
-    clearInterval(this.frameTimer)
-    clearTimeout(this.actionCompletionTimer)
+    if (this.frameTimer) clearInterval(this.frameTimer)
+    if (this.actionCompletionTimer) clearTimeout(this.actionCompletionTimer)
     this.currentFrame = 0
     this.frameTimer = null
     this.actionCompletionTimer = null
@@ -556,7 +556,7 @@ class Creature {
     const endY = window.innerHeight - this.containerHeight
     const distance = endY - startY
     if (distance <= 0) {
-      clearInterval(this.frameTimer); this.frameTimer = null
+      if (this.frameTimer) clearInterval(this.frameTimer); this.frameTimer = null
       this.positionY = endY
       this.container.style.top = `${endY}px`
       return this.playTripAfterFall()
@@ -565,7 +565,7 @@ class Creature {
     const startTime = performance.now()
     const step = (time: number) => {
       if (this.isDragging) {
-        clearInterval(this.frameTimer); this.frameTimer = null
+        if (this.frameTimer) clearInterval(this.frameTimer); this.frameTimer = null
         return this.scheduleFrame()
       }
       const elapsed = (time - startTime) / 1000
@@ -575,7 +575,7 @@ class Creature {
       if (this.positionY < endY) {
         requestAnimationFrame(step)
       } else {
-        clearInterval(this.frameTimer); this.frameTimer = null
+        if (this.frameTimer) clearInterval(this.frameTimer); this.frameTimer = null
         this.positionY = endY
         this.container.style.top = `${endY}px`
         this.playTripAfterFall()
@@ -650,7 +650,7 @@ class Creature {
     const { frames, interval } = this.spriteConfig.walk
     const walkCycles = this.spriteConfig.forcewalk
     this.currentAction = 'forced-walk'
-    this.playAnimation(frames, interval, walkCycles, () => this.setNextAction())
+    this.playAnimation(frames, interval, walkCycles.loops, () => this.setNextAction())
   }
 
   startForceThink() {
@@ -726,7 +726,7 @@ class Creature {
       this.currentFrame = f = (f + 1) % frames.length
       this.img.src = frames[f]
       if (f === frames.length - 1 && ++playCount >= loops) {
-        clearInterval(this.frameTimer)
+        if (this.frameTimer) clearInterval(this.frameTimer)
         this.frameTimer = null
         this.currentAction = null
         this.actionCompletionTimer = setTimeout(onComplete, 0)
@@ -745,7 +745,7 @@ class Creature {
     }
 
     const movingActions = ['walk', 'forced-walk', 'climbTop']
-    if (movingActions.includes(this.currentAction)) {
+    if (this.currentAction && movingActions.includes(this.currentAction)) {
       const dx = this.direction * this.spriteConfig.walkspeed * delta
       this.positionX += dx
       this.setFacingFromDelta(dx)
