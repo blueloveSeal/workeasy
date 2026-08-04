@@ -53,11 +53,7 @@ const menuItems = [
     </header>
 
     <main class="main-container">
-      <router-view v-slot="{ Component }">
-        <transition name="fade-slide">
-          <component :is="Component" />
-        </transition>
-      </router-view>
+      <router-view />
     </main>
 
     <WebmejiPet />
