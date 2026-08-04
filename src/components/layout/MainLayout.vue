@@ -6,6 +6,7 @@ import {
   Notebook,
   Star,
   Setting,
+  ShoppingCart,
 } from '@element-plus/icons-vue'
 import WebmejiPet from '@/components/common/WebmejiPet.vue'
 
@@ -15,6 +16,7 @@ const menuItems = [
   { index: '/tasks', title: '任务', icon: List },
   { index: '/notes', title: '笔记', icon: Notebook },
   { index: '/bookmarks', title: '书签', icon: Star },
+  { index: '/xianyu', title: '闲鱼', icon: ShoppingCart },
   { index: '/settings', title: '设置', icon: Setting },
 ]
 </script>
@@ -27,7 +29,7 @@ const menuItems = [
           <span class="logo-icon">W</span>
           <div class="brand-copy">
             <span class="logo-text">WorkEasy</span>
-            <span class="logo-caption">本地工作台</span>
+            <span class="logo-caption"></span>
           </div>
         </div>
         <nav class="nav-scroll" aria-label="主要导航">

@@ -13,6 +13,7 @@ const router = createRouter({
         { path: 'bookmarks', name: 'Bookmarks', component: () => import('@/views/bookmarks/BookmarkPage.vue') },
         { path: 'launcher', name: 'Launcher', component: () => import('@/views/launcher/LauncherPage.vue') },
         { path: 'settings', name: 'Settings', component: () => import('@/views/settings/SettingsPage.vue') },
+        { path: 'xianyu', name: 'Xianyu', component: () => import('@/views/xianyu/XianyuPage.vue') },
       ],
     },
   ],
