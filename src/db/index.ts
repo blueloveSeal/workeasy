@@ -50,6 +50,18 @@ export class WorkEasyDB extends Dexie {
       xianyuProducts: 'id, status, xianyuItemId',
       xianyuOrders: 'orderId, status, createTime',
     })
+    // Version 4: Add createdAt/updatedAt indexes to xianyuProducts
+    this.version(4).stores({
+      tasks: 'id, status, priority, dueDate, *tags, createdAt',
+      notes: 'id, category, isPinned, *tags, updatedAt',
+      bookmarks: 'id, category, *tags, createdAt',
+      launcherItems: 'id, order',
+      themeSettings: 'id',
+      customBackgrounds: 'id, type',
+      xianyuCookie: 'id',
+      xianyuProducts: 'id, status, xianyuItemId, createdAt, updatedAt',
+      xianyuOrders: 'orderId, status, createTime',
+    })
   }
 }
 
