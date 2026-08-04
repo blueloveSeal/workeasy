@@ -142,8 +142,9 @@ function createSpriteConfig(base: string, overrides?: {
   }
 }
 
-const SHIMEJI_CONFIG = createSpriteConfig('/webmeji/shimeji/')
-const MIKU_CONFIG = createSpriteConfig('/webmeji/miku/', {
+const BASE = import.meta.env.BASE_URL
+const SHIMEJI_CONFIG = createSpriteConfig(BASE + 'webmeji/shimeji/')
+const MIKU_CONFIG = createSpriteConfig(BASE + 'webmeji/miku/', {
   fallspeed: 150,
   jumpspeed: 200,
   gettingupspeed: 3500,
