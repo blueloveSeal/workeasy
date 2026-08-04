@@ -6,7 +6,7 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import { fileURLToPath, URL } from 'node:url'
 
 export default defineConfig({
-  base: '/workeasy/',
+  base: process.env.GITHUB_PAGES ? '/workeasy/' : '/',
   plugins: [
     vue(),
     AutoImport({
