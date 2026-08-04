@@ -2,8 +2,5 @@ name = "workeasy"
 compatibility_date = "2024-09-01"
 compatibility_flags = ["nodejs_compat"]
 
-[assets]
-directory = "./dist"
-
 [vars]
 # Environment variables can be set in Cloudflare Dashboard
