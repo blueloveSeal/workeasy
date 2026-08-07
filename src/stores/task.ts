@@ -60,7 +60,7 @@ export const useTaskStore = defineStore('task', () => {
     const updates = { ...patch, updatedAt: new Date().toISOString() }
     await db.tasks.update(id, updates)
     const idx = tasks.value.findIndex(t => t.id === id)
-    if (idx !== -1) Object.assign(tasks.value[idx], updates)
+    if (idx !== -1) tasks.value[idx] = { ...tasks.value[idx], ...updates }
   }
 
   async function remove(id: string) {

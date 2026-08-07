@@ -334,7 +334,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, nextTick } from 'vue'
+import { ref, reactive, computed, nextTick, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Plus, Delete, Search, List, Grid, ArrowDown } from '@element-plus/icons-vue'
 import type { FormInstance, FormRules } from 'element-plus'
@@ -347,6 +347,10 @@ import type { Task } from '@/types/task'
 
 // --- Store ---
 const taskStore = useTaskStore()
+
+onMounted(() => {
+  taskStore.load()
+})
 
 // --- View mode ---
 const viewMode = ref<'list' | 'kanban'>('list')
